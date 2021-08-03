@@ -1,0 +1,1 @@
+[gatsby-starter-bee](https://github.com/JaeYeopHan/gatsby-starter-bee/blob/master/README.ko.md) 템플릿을 사용했습니다.

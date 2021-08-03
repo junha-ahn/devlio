@@ -96,8 +96,8 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
-        host: 'https://devly.netlify.app',
-        sitemap: 'https://devly.netlify.app/sitemap.xml',
+        host: 'https://devkly.com',
+        sitemap: 'https://devkly.com/sitemap.xml',
         policy: [
           {
             userAgent: '*',

@@ -1,9 +1,9 @@
 module.exports = {
-  title: `Devly`,
-  description: `Blog posted about ...`,
+  title: `Devkly`,
+  description: `simple dev blog`,
   author: `Juna`,
   introduction: `I love Node.js`,
-  siteUrl: `https://devkly.netlify.app/`, // Your blog site url
+  siteUrl: `https://devkly.com/`, // Your blog site url
   social: {
     twitter: ``, // Your Twitter account
     github: ``, // Your GitHub account
@@ -16,7 +16,7 @@ module.exports = {
   keywords: [`blog`],
   comment: {
     disqusShortName: '', // Your disqus-short-name. check disqus.com.
-    utterances: 'junha-ahn/devly', // Your repository for archive comment
+    utterances: 'junha-ahn/devkly', // Your repository for archive comment
   },
   configs: {
     countOfInitialPost: 10, // Config your initial count of post

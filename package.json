@@ -1,11 +1,11 @@
 {
-  "name": "devly",
+  "name": "devkly",
   "private": true,
   "description": "Gatsby blog starter template",
   "version": "0.1.0",
   "author": "junha.ahn.dev@gmail.com",
   "bugs": {
-    "url": "https://github.com/Juna/devly/issues"
+    "url": "https://github.com/Juna/devkly/issues"
   },
   "dependencies": {
     "gatsby": "^3.10.2",
@@ -66,7 +66,7 @@
     "recursive-readdir": "^2.2.2",
     "signale": "^1.4.0"
   },
-  "homepage": "https://github.com/Juna/devly",
+  "homepage": "https://github.com/Juna/devkly",
   "keywords": [
     "gatsby"
   ],
@@ -74,7 +74,7 @@
   "main": "n/a",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Juna/devly.git"
+    "url": "git+https://github.com/Juna/devkly.git"
   },
   "scripts": {
     "post": "gatsby-post-gen",

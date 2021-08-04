@@ -97,7 +97,7 @@ module.exports = {
       resolve: 'gatsby-plugin-robots-txt',
       options: {
         host: 'https://devkly.com',
-        sitemap: 'https://devkly.com/sitemap.xml',
+        sitemap: 'https://devkly.com/sitemap/sitemap-index.xml',
         policy: [
           {
             userAgent: '*',

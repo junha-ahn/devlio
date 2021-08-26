@@ -2,7 +2,7 @@
 title: google.com에 접속해보자 (TCP 연결 과정)
 date: "2020-12-06T13:19:49.126Z"
 description: "이 글은 TCP/IP 연결이 어떻게 진행되는지를 간단히 살펴본다"
-category: 'os'
+category: 'network'
 draft: false
 ---
 

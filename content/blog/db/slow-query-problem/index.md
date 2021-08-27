@@ -6,6 +6,7 @@ category: db
 draft: false
 ---
 
+아래 실제 에러 시나리오와, 개인 경험을 바탕으로 **Slow Query 장애 시나리오**를 작성해봤다.
 
 ## [[개발바닥] NodeJS 장애회고 + 모니터링 이야기](https://www.youtube.com/watch?v=52t9DlwmqJI&t=104s)
 
@@ -22,18 +23,11 @@ draft: false
 6. 봤더니 `max connection` 수를 node 서버당 5개로 잡고 있었다. 
    - 5개에서 50개로 늘렸다. (DB 스펙도 5000개 가능하게)
 
-<br/>
-
-위 영상 + 개인 경험을 바탕으로 **Slow Query 장애 시나리오**를 작성해봤다.
-
-## 가정
-
-DB는 master 1대가 존재한다고 가정한다.
-
-<br/>
+## 조건
 
 `client > server > DB` 구조라고 가정한다.
-- server는 10대가 존재한다고 가정한다.
+- DB는 master 1대가 존재
+- server는 1대가 존재
 - server는 Node.js 애플리케이션이다.
 
 <br/>
@@ -70,12 +64,13 @@ CPU 사용률이 너무 높아, DBA팀에서 쿼리 확인조차 불가능했다
 <br/>
 
 DBA팀에서 `Active Query` 들을 확인하여 애플리케이션 개발팀에 전달한다.
-- 문제가 되는 `Slow Query` 를 발견한다.
 - 또 강제로 `kill`하기도 한다.
 
 <br/>
 
-문제가 되는 쿼리를 수정하여 긴급 배포한다. 상황이 종료되었다.
+개발팀은 문제가 되는 `/api/slow-query`로직과  `Slow Query` 를 발견한다.
+- 수정하여 긴급 배포한다. 
+- 상황이 종료되었다.
 
 ##  왜 DB CPU 사용률이 급격히 증가했을까?
 
@@ -85,7 +80,7 @@ Slow Query를 처리하는게 CPU 사용률을 끌어올리고, 다른 요청(�
 
 ## Q. 왜 DB Connection수가 급격히 증가했을까?
 
-Server 실행시 `connection pool`의 `connection`을 최소값만큼 생선한다.
+Server 실행시 `connection pool`의 `connection`을 최소값만큼 생성한다.
 - 예를들어 2개가 최소값이라면 `connection`을 2개 생성한다.
 - 유휴 `connectoin`이 부족하자, 점점 **limit까지 생성한것이다.**
 
@@ -96,9 +91,9 @@ Server 실행시 `connection pool`의 `connection`을 최소값만큼 생선한�
 1. HTTP Request 발생
 2. `DB Connection Pool`에서 유휴 `connection`을 가져와서 `slow query` 실행
    -  해당 쿼리의 응답이 오지 않는다.
-   -  즉 아직 `Connection이` 반납하지 않았다.
-3. 해당 요청이 반복된다.
-	- `DB Module`은 설정된 limit까지 새로운 `Connection`을 생선한다.
+   -  즉 아직 `Connection`이 반납하지 않았다.
+3. 해당 HTTP Request는 반복된다.
+	- `DB Module`은 설정된 limit까지 새로운 `Connection`을 생성한다.
 	- 물런 새로운 `Connection`으로 요청을 해도 응답은 오지 않는다.
 
 

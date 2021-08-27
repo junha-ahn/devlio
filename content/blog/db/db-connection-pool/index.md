@@ -25,12 +25,11 @@ DBMS와의 통신은 TCP/IP로 이루어진다. 그렇다면 이러한 TCP/IP의
 
 이때 우리는 연결을 위해 `3-way handshake` 과정을 거친다.
 
-1. client측은 통신 상대인 서버측 OS에게 가상 경로 오픈을 의뢰
-	- client -> server `TCP SYN`
-2. `LISTEN`하고 있던 포트이기에, 서버는 문제가 없다고 응답한다
-	- server -> client `TCP SYN ACK`
-3. client 측도 확인했다는 메세지를 보내며, 이때 **가상 경로**가 오픈된다.
-	- client -> server `TCP ACK`
+1. 클라이언트가 통신 상대인 서버측 OS에게 가상 경로 오픈을 의뢰하며 `SYN` 패킷 전송
+2. 서버측 소켓은 `LISTENING`상태이기에 `ACK +SYN` 패킷 응답.
+3. 클라이언트도 다시 `ACK`  패킷으로 응답하며 서버의 새로운 소켓이 생성되며 연결(`ESTABLISHED`)된다
+
+> 더 자세한 내용은 [링크 참고](/network/3-way-handsahke-with-c)
 
 위 모든 요청은 실제 물리적 회선을 거쳐 이루어진다.
 

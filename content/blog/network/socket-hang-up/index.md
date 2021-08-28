@@ -3,7 +3,7 @@ title: socket hang up에 빠진 Application
 date: "2020-12-10T13:09:09.388Z"
 description: "대량의 Socket이 TIME_WAIT에 걸려, Socket hang up이 발생한다"
 category: 'network'
-draft: true
+draft: false
 ---
 
 # 요약

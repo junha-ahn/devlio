@@ -29,7 +29,7 @@ DBMS와의 통신은 TCP/IP로 이루어진다. 그렇다면 이러한 TCP/IP의
 2. 서버측 소켓은 `LISTENING`상태이기에 `ACK +SYN` 패킷 응답.
 3. 클라이언트도 다시 `ACK`  패킷으로 응답하며 서버의 새로운 소켓이 생성되며 연결(`ESTABLISHED`)된다
 
-> 더 자세한 내용은 [링크 참고](/network/3-way-handsahke-with-c)
+> 더 자세한 내용은 [링크 참고](/network/3-way-handshake-with-c)
 
 위 모든 요청은 실제 물리적 회선을 거쳐 이루어진다.
 

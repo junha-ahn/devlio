@@ -48,7 +48,7 @@ C언어 코드는 생략하고 TCP/IP 이해에 필요한 로직만 담았다.
 <br/>
 
 또한 TCP/IP 의구현은 보통 호스트의 OS 내부에 이미 구현되어있기 때문에, 우리는 Socket을 이용해 쉽게 통신이 가능하다.
-> 이 부분을 더 자세히 알고싶다면? [google.com에 접속해보자 (TCP 연결 과정)](./network/connect-google-with-tcp)
+> 이 부분을 더 자세히 알고싶다면? [google.com에 접속해보자 (TCP 연결 과정)](/network/connect-google-with-tcp)
 
 <br/>
 

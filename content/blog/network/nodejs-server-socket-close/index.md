@@ -21,11 +21,16 @@ draft: false
 3. `Passive Close`는 '연결 종료'를 의미하는 `FIN` 전송
 4. `Active Close`는 '연결 종료'에 대한 `ACK` 응답
 
+<br/>
+
 참고로 일반적인 웹 클라이언트-서버 환경에서는 클라이언트가 `Active Close`이다
 
 일반적인 종료과정이 4번의 데이터 송수신을 거쳐 진행되기 때문에 `4-way-handshake`라고 불리며 이것이 `Graceful Close`이다
 
-> 더 자세히 알고싶다면? [3 Way Handshake 이해하기 (내부 소켓의 구조)](/network/3-way-handshake-with-c/)
+<br/>
+
+어떻게 동작하는지, 더 자세히 알고싶다면? 
+- [3 Way Handshake 이해하기 (내부 소켓의 구조)](/network/3-way-handshake-with-c/)
 
 ## 왜 보통 클라이언트가 먼저 연결을 끊을까?
 
@@ -100,18 +105,26 @@ Connection 헤더에 대해 더 자세히 알고싶다면?
 
 ## Half-close란?
 
-2번과 3번 모두 `FIN`패킷을 보내며 연결을 끊는건데 어떤 차이점이 있을까? `Half-close`가 무엇일까?
+2번과 3번 모두 `FIN`패킷을 보내며 연결을 끊는건데 어떤 차이점이 있을까? 
 
-말그래도 절반만 종료한다는 것을 의미한다.
+<br/>
+
+`Half-close`가 무엇일까?
+
+말그래도 절반만 종료한다는 아래의 경우를 의미한다.
+
 1. 송신만 가능, 수신 불가능
 2. 수신만 가능, 송신 불가능
 
-이 경우에는 2번의 경우로 `FIN` 패킷을 보내고 연결을 종료할것인데, 혹시 더 보낼게 있다면(수신) 보내도 괜찮아 라는 의미이다.
+<br/>
+
+`res.socket.end()` 경우는
+- `FIN` 패킷을 보내며 "연결을 종료할것인데, 혹시 더 보낼게 있다면 보내줘"
 - 그리고 `Passive Close`측은 데이터를 다 처리한 후 `FIN` 패킷을 `Active Close`측에 전송할 것이다.
 
 <br/>
 
-**다만 이 글에선 이 특징에 대해 다루지 않는다.**
+**다만 이 글에선 해당 특징에 대해 다루지 않는다.**
 
 ## 직접 구현해보자 
 
@@ -211,14 +224,15 @@ app.get('/socket-destroy', async (req, res) => {
 
 2번은 `socket.end()`시 메세지를 함께 보낼 수 있어서, `String`으로 `HTTP Response`를 만들어보았다.
 
-해당 내용에 대해 더 자세히 알고싶다면?
-- [Http와 tcp/ip의 이해](https://hwan-shell.tistory.com/271)
-- [Node.js net Module을 사용해 HTTP 저수준 이해하기](https://iamssen.medium.com/node-js-net-module%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-http-%EC%A0%80%EC%88%98%EC%A4%80-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-4835618ec46)
-
-<br/>
 
 3번은 `HTTP Response` 1초 이후, `socket.destroy()`를 진행한다.
 - `keep-alive` 을 준수하기에 응답 이후 `socket` 연결을 양측 모두 끊지 않는다.
+
+<br/>
+
+HTTP와 TCP/IP 차이에 대해 더 자세히 알고싶다면?
+- [Http와 tcp/ip의 이해](https://hwan-shell.tistory.com/271)
+- [Node.js net Module을 사용해 HTTP 저수준 이해하기](https://iamssen.medium.com/node-js-net-module%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-http-%EC%A0%80%EC%88%98%EC%A4%80-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-4835618ec46)
 
 ### 사용법은?
 
@@ -234,9 +248,6 @@ app.get('/socket-destroy', async (req, res) => {
 ![1](./1.png) 
 > 클라이언트에 노란색을 표시했다
 
-<br/>
-
-간략히 요약하면 아래와 같다
 ```
 ...
 Client > Server [FIN, ACK] Seq=126 Ack=230
@@ -244,7 +255,9 @@ Server > Client [FIN, ACK] Seq=230 Ack=127
 Client > Server [ACK] Seq=127 Ack=231
 ```
 
-`3-way-handshake`과정 (앞 3줄) 을 거치고 `Data Transfer` 과정에 이어서
+간략히 요약하면 위와 같다
+
+`3-way-handshake`과정 (앞 3줄) 이후  `Data Transfer` 과정을 거치고 
 - 클라이언트가 먼저 연결 종료(`FIN`)를 요청하는것을 확인할 수 있다.
 
 ### 2번째 방법
@@ -276,21 +289,50 @@ Server > Client [ACK] Seq=231 Ack=141
 
 <br/>
 
----
+위 패킷 내용에 대해 더 자세히 학습하고자 한다면? 
+- [TCP의 기능과 패킷 구조](https://mr-zero.tistory.com/36)
+
+## 4단계 Handshake인데 왜 3 단계일까?
+
+> 해당 내용에 대하여, 좀 더 명확한 정보를 찾아 내용 추가한다
+
+> 또 좀 더 자료를 찾은 후에 이 파트만을 다루는 글을 작성할 예정이다.
 
 <br/>
 
-위 패킷 내용에 대해 더 자세히 학습하고자 한다면? [TCP의 기능과 패킷 구조](https://mr-zero.tistory.com/36)
+답은 간단하다. TCP/IP가 효율을 추구하기 때문이다.
+
+![4way-handshake](./4way-handshake.png) 
 
 <br/>
 
-참고로 종료과정이 4개의 패킷인 것이 아니라, 3개의 패킷인 이유는?
+일단 첫번째 단계인 `#1 FIN` 플래그 전송부터 다시 살펴보자.
+
+1. 단순 `#1 FIN` 플래그를 전송하는 경우
+2. `#1 FIN`플래그 + 이전에 전송한 `ACK`을 함께 전송하는 경우
+
+2번의 경우, 혹시 이전에 전송한 `ACK`이 분실되었을때를 대비할 수 있다
+- 또한 `ACK` 을 위한 공간은 TCP 헤더부분에 존재하기 때문에 '무료'로 함께 보낼 수 있다.
+
+<br/>
+
+> ACK (1 bit): 클라이언트가 보낸 최초의 SYN 패킷 이후에 전송되는 모든 패킷은 이 플래그가 설정되어 있어야 한다. - [Wikipidia](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)
+
+<br/>
+
+그럼 이제 `#2 ACK`, `#3 FIN` 을 살펴보자. 왜 두 패킷이 함께 전송될까? 
+- 위와 동일한 효율로 인한 설계이다.
+
+<br/>
+
+> 호스트 A가 `FIN`을 보내고 호스트 B가 `FIN & ACK`(두 단계를 하나로 합치기)로 응답하고, 호스트 A가 `ACK`로 응답할 때 3-way handshake로 연결을 종료하는 것도 가능합니다 - [Wikipidia](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)
+
+<br/>
+
+이 파트에 대해 더 자세히 알고싶다면? 
+- [FIN -> FIN/ACK -> ACK은 TCP의 환상](https://kawasin73.hatenablog.com/entry/2019/08/31/153809)
+- [TCP Connection Termination - FIN, FIN ACK, ACK](https://cs.stackexchange.com/questions/76393/tcp-connection-termination-fin-fin-ack-ack)
 - [Piggyback 방식](http://www.ktword.co.kr/test/view/view.php?m_temp1=3242)
-- 또는 Half-close의 특징이라는 글도 존재한다. ([에반문 블로그](https://evan-moon.github.io/2019/11/17/tcp-handshake/#fin_wait_1))
-
-<br/>
-
-> 확실한 자료를 찾으면 글 내용을 수정할 예정이다.
 
 
 ## 마무리
@@ -307,5 +349,8 @@ Server > Client [ACK] Seq=231 Ack=141
 - [Node.js net Module을 사용해 HTTP 저수준 이해하기](https://iamssen.medium.com/node-js-net-module%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%84%9C-http-%EC%A0%80%EC%88%98%EC%A4%80-%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0-4835618ec46)
 - [How to close HTTP connection in node.js using Express](https://stackoverflow.com/questions/36680794/how-to-close-http-connection-in-node-js-using-express)
 - [Difference between NodeJS new Agent() and HTTP Keep-Alive header](https://stackoverflow.com/questions/44649566/difference-between-nodejs-new-agent-and-http-keep-alive-header/58332910#58332910)
-- [Piggyback 방식](http://www.ktword.co.kr/test/view/view.php?m_temp1=3242)
 - [TCP가 연결을 생성하고 종료하는 방법, 핸드쉐이크](https://evan-moon.github.io/2019/11/17/tcp-handshake/)
+- [[Wikipidia] Transmission Control Protocol](https://en.wikipedia.org/wiki/Transmission_Control_Protocol)
+- [FIN -> FIN/ACK -> ACK은 TCP의 환상](https://kawasin73.hatenablog.com/entry/2019/08/31/153809)
+- [TCP Connection Termination - FIN, FIN ACK, ACK](https://cs.stackexchange.com/questions/76393/tcp-connection-termination-fin-fin-ack-ack)
+- [Piggyback 방식](http://www.ktword.co.kr/test/view/view.php?m_temp1=3242)

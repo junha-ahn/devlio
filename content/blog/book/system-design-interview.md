@@ -3,7 +3,7 @@ title: <대규모 시스템 설계 기초> 후기
 date: "2021-08-07T06:08:56.670Z"
 description: "어떻게 유튜브를 설계할 수 있을까?"
 category: book
-draft: false
+draft: true
 ---
 
 ### 가상 면접 사례로 배우는 대규모 시스템 설계 기초

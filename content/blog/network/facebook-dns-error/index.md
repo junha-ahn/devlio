@@ -1,5 +1,5 @@
 ---
-title: Facebook 접속 장애 사건 분석 (BGP)
+title: Facebook 접속 장애 사건 분석 (BGP Down)
 date: "2021-10-06T14:02:53.119Z"
 description: "5시간 동안 페이스북이 인터넷 세상에서 사라졌다"
 category: 'network'
@@ -191,7 +191,7 @@ DNS는 IP주소를 받아오는 역할을 할 뿐이다. 실제 인터넷 속도
 
 ![dynamic-routing](./dynamic-routing.png)
 
-- **다이나믹 라우팅에선 자신이 존재한다고 알려줄(`announce`) 네트워크를 선언해줘야 한다.**
+- **다이나믹 라우팅에선 자신이 존재한다고 알려줄(`ANNOUNCE`) 네트워크를 선언해줘야 한다.**
 
 <br/>
 
@@ -256,9 +256,9 @@ SKT, KT, LGU+같은 ISP(Internet Service Provider)가 한 개 이상의 AS를 �
 
 AS들의 라우터는 라우팅 테이블은 BGP 프로토콜에 의해 갱신, 유지된다. 
 
-1. 페이스북 AS는 특정 IP prefix가 자신에게 속한다고 지속적으로 주변 노드에게 `Announce` 해야 한다.
-2. 하지만 "어떠한 이유"로 이러한 AS 네트워크에서 사라졌다
-
+1. 페이스북 AS는 특정 IP prefix가 자신에게 속한다고 지속적으로 주변 노드에게 `ANNOUNCE` 해야 한다.
+2. 하지만 "어떠한 이유"로 이러한 AS 네트워크에서 사라졌다 (BGP Down)
+  
 ```
 Due to Facebook stopping announcing their DNS prefix routes through BGP
 DNS resolvers had no way to connect to their nameservers.
@@ -267,6 +267,15 @@ DNS resolvers had no way to connect to their nameservers.
 다시말해, 페이스북은 인터넷이라는 세상 속에서 단절되어, 사라지게 된 것이다.
 - Facebook and its sites had effectively disconnected themselves from the Internet.
 - As a direct consequence of this, DNS resolvers all over the world stopped resolving their domain names.
+
+<br/>
+
+그 후, 다시 `ANNOUNCE` 를 시작하고 연결이 재개 되었다. (BGP Up)
+- 물리적 회선이 절단된 것은 아님으로 다시 `ANNOUNCE` 
+- 이때부터, 다시 다른 AS 라우터의 라우팅 테이블에 포함된다. 
+- 즉 트래픽을 주고 받을 수 있게 된다.
+
+
 
 <br/>
 
@@ -283,8 +292,10 @@ DNS resolvers had no way to connect to their nameservers.
 
 1. 글로벌 백본 가용성을 평가하기 위한 명령이 오동작
 2. 글로벌 데이터센터와 지역 데이터센터와의 연결을 끊음
-3. 안정적 운영을 위해, 지역 DC의 DNS는 상위 글로벌 DC와 연결이 안될 경우 ISP로 BGP Announce 중단 (다른 지역 DC 연결을 위해)
-4. 3번 이유로 DNS 서버는 동작 중이나, 인터넷에서 Facebook이 사라짐
+3. 안정적 운영을 위해서 지역 DC의 DNS는 상위 글로벌 DC와 연결이 안될 경우 다른 ISP로 `BGP ANNOUNCE` 중단
+4. 3번 이유로 DNS 서버는 여전히 동작 중이나, 인터넷에서 Facebook이 사라짐
+
+> 참고로 3번에서 언급하는 DNS는 지역 Authoritative Naerserver라고 추측한다.
 
 ### 왜 복구에 오래걸렸나?
 

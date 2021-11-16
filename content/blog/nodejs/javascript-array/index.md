@@ -37,6 +37,10 @@ draft: false
 자바스크립트 배열은 인덱스를 프로퍼티 키로 갖으며 length 프로퍼티를 갖는 객체이다. 
 - 즉, 자바스크립트 배열의 Index는 사실 프로퍼티 값이다. 
 - 따라서, 모든 값은 객체의 프로퍼티 값이 될 수 있으므로 어떤 타입의 값이라도 배열의 요소가 될 수 있다.
+
+<br/>
+
+자바스크립트 배열은 '해시 테이블'로 구현된 객체
   
 <br/>
 
@@ -44,9 +48,15 @@ from [자바스크립트 배열은 배열이 아니다](https://poiemaweb.com/js
 
 # 2. Hidden Class
 
-위 내용에는 자바스크립트 객체와 배열이 사실 큰 차이가 없어 보인다.
+자바스크립트 배열은 '해시 테이블'로 구현됬을까? 아니다.
 
-그러나 자바스크립트 엔진은 `Array`와 `Object`를 동등하게 처리하지 않고, 최적화를 한다.
+과거에는 그랬을지 몰라도, V8엔진은 객체의 `property`를 동적 조회(Dynamic Lookup)를 하지 않는다.
+
+<br/>
+
+즉 해시 테이블 대신 히든 클래스라는 특수한 객체를 이용하여 객체의 정보를 관리한다.
+- 각 property의 메모리 offset(메모리상의 위치) 등
+
 
 모든 `Javascript Object`는 `Hidden Class`를 가진다. 
 
@@ -57,23 +67,32 @@ from [자바스크립트 배열은 배열이 아니다](https://poiemaweb.com/js
 - [V8의 히든 클래스 이야기](https://engineering.linecorp.com/ko/blog/v8-hidden-class/)
 # 3. Properties vs Elements
 
-그렇다면 Javascript Array도 히든 클래스를 가지고 어떻게 처리 되는건가? 아니다. 
+자바스크립트 객체와 배열이 사실 큰 차이가 없어 보인다. 
+
+Javascript Array도 히든 클래스를 가지고 어떻게 처리 되는건가? 
+
+아니다. 자바스크립트 엔진은 `Array`와 `Object`를 똑같이 처리하지 않는다. (각각 최적화한다)
+
+
+
+
 
 ![Js-Object](./Js-Object.png)
 > from [How is data stored in V8 JS engine memory?](https://blog.dashlane.com/how-is-data-stored-in-v8-js-engine-memory/) 
 
-심지어 Object의 property 정보도 히든클래스에서 관리되는것이 아닐 수 있다. 
-
-위 이미지의 `In-Object Property`를 보면 확인 가능하다
-
 <br/>
 
-그러면 Array의 property는 어디에 저장되는 것일까?
+그러면 Array의 property는 어디에 저장, 관리되는 것일까?
 - 위 이미지 속 `Elements`에 저장된다. (정확히는 `fast-elements`일 경우)
 
 <br/>
 
-즉 자바스크립트 엔진은 `number-properties`를 구분하고, 최적화하여 저장한다. 
+즉 자바스크립트 엔진은 `number-properties`를 구분하고, 최적화를 위해 따로 저장한다. 
+
+<br/>
+
+심지어 Object의 property 정보도 히든클래스에서 관리되는것이 아닐 수 있다. 
+- 위 이미지의 `In-Object Property`를 보면 확인 가능하다
 
 <br/>
 
@@ -90,12 +109,12 @@ from [자바스크립트 배열은 배열이 아니다](https://poiemaweb.com/js
 # 4. 결론
 
 1. 자바스크립트 `Array`는  `number-property Object`이다.
-2. 그러나 자바스크립트 엔진(v8)은 `Array`와 `Object`를 명백히 구분한다.
+2. 자바스크립트 엔진(v8)은 `Array`와 `Object`를 명백히 구분한다.
 3. `number-properties`는 `Heap`에 존재하는 `JS Object.elements`에 저장/관리 된다.
 
 <br/>
 
-그렇다면 v8엔진이 구현한 자바스크립트의 Array는 배열(자료구조)이 아닐까? 
+그렇다면 v8엔진이 구현한 자바스크립트의 Array는 (자료구조)배열이 아닐까? 
 
 이름은 같지만 설계상 편리를 위해 만든걸까?
 
@@ -110,7 +129,7 @@ from [자바스크립트 배열은 배열이 아니다](https://poiemaweb.com/js
 
 결국 관점에 따라 다른것 같다. 
 
-> 다만 대부분 자료에서 '저장위치'등을 언급하지는 않는다.
+> 다만 대부분 자료에서 '저장위치'등을 언급하지는 않는다. 
 
 <br/>
 

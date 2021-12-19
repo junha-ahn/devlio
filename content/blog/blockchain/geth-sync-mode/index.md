@@ -1,5 +1,5 @@
 ---
-title: Geth Sync Mode 설명 및 차이점
+title: Geth는 어떻게 동기화(Sync)할까?
 date: "2021-07-21T08:35:28.062Z"
 description: "Geth Sync Mode를 비교해보자"
 category: blockchain
@@ -42,6 +42,11 @@ Archive 이외의 노드는 동기화하면서 State 데이터가 정리(Pruning
 
 ![archive-vs-full](./archive-vs-full.png) 
 
+
+<br>
+
+이더리움 State에 대해서 궁금하다면
+- [이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/) 
 <br/>
 
 아래는 실제 이더리움 클라이언트의 구현체 목록입니다.  
@@ -134,12 +139,13 @@ Pruning이 어려운 작업인 이유
 - 차이가 없습니다. 둘다 똑같이 Pruning에 관한 설정입니다.
     - Archive Mode 옵션: NoPruning = True, gcmode = archive
     - Pruning Mode 옵션: NoPruning = False, gcmode = full
-- https://github.com/binance-chain/bsc/issues/302#issuecomment-869167735
 - 여담이지만, 전 `NoPruning` 이라는 이름이 너무 헷갈립니다.
 
 ----
 
 <br/>
+
+[이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/) 추천합니다.
 
 모든 내용은 요약되었기 때문에, 아래 링크를 통해 자세한 내용을 읽어보는 것을 추천합니다. 
 

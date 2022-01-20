@@ -43,6 +43,13 @@ it will receive a SIGKILL signal to force the process exit.
 1. pm2 를 사용하지 않고 `kill -INT <pid>` 명령어를 통해 직업 종료하는 방법
 2. pm2 `kill_timeout` 를 매우 길게 세팅하여 여유있게 종료하는 방법
 
+## 추가 정보
+
+`21.01.20` 추가 작성
+
+원인은 사실, Config를 잘못 주입 후 실행해서 생긴 문제라고 추가 추측 (chainID 관련)
+
+그럼에도 글 내용 자체는 의미가 있으니 삭제하지 않겠습니다.
 
 ## 참고
 - [Is it safe to kill geth with SIGTERM?](https://ethereum.stackexchange.com/questions/10566/is-it-safe-to-kill-geth-with-sigterm)

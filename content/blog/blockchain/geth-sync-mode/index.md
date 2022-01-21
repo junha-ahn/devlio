@@ -129,10 +129,11 @@ Pruning이 어려운 작업인 이유
 
 ### Q. [`gcmode=full` 로 실행했지만 archive Node로 전환하고 싶습니다. 즉, 전체 State를 다운로드 하고 싶습니다](https://github.com/ethereum/go-ethereum/issues/24115)
 
-- 과거 State에 즉시 접근(immediately accessible)하기 위해서 `gcmode=archive` 로 실행했어야 합니다.
-- (상태정리를 포함한) Full Sync Mode로 동기화한 경우에, earlier point부터 다시 계산하여 필요한 State를 만들 수 있습니다. (이는 매우 힘든 계산 작업입니다)
-- Geth는 약 2시간 마다 상태를 제거(flush)합니다. (`reexec` parameter)
-- 다만 fast/snap Sync Mode로 실행했다면 Pivot Point 이전의 블록에 대한 상태를 얻을 수 없습니다 (Full Mode로 전환되기 이전 상태는 얻을 수 없다)
+- 과거 State에 즉시 접근(immediately accessible)하기 위해서 `gcmode=archive` 로 실행했어야 합니다. (gcmode default value는 “full”)
+- `syncmode=full, gcmode=full` 로 실행했다면, Earlier Point부터 다시 계산하여 필요한 State를 만들 수 있습니다. 
+- Geth는 약 2시간 마다 State를 flush() 합니다. (reexec parameter)
+- 다만 fast/snap Sync Mode로 실행했다면 Pivot Point 이전의 블록에 대한 상태를 얻을 수 없습니다.
+- Geth 종료 후 `gcmode=archive` 를 통해 다시 실행했다면, 그 이후의 상태 데이터는 메모리 상에서 제거되는게 아니라, disk에 flush()됩니다
 
 ### Q. `NoPruning`  옵션과 `gcmode` 옵션의 차이점이 무엇일까요?
 

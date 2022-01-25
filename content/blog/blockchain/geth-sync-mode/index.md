@@ -6,11 +6,15 @@ category: blockchain
 draft: false
 ---
 
+먼저 문서에 오류가 있을 수 있음을 밝힙니다. 수정 요청 부탁드립니다! 
 
-이 문서는 Geth의 동기화 과정의 차이점을 이해하는 것을 목적으로 합니다.
+두번째로, 이 문서는 여러 출처의 글을 정리한 글입니다. Geth 코드 레벨 이해를 담고 있지 않습니다.
 
-먼저 문서에 오류가 있을 수 있음을 밝힙니다. 수정 요청  부탁드립니다! 
+## 목차
 
+1. [이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/)
+2. Geth는 어떻게 동기화할까?
+3. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
 
 ## 노드란?
 
@@ -88,8 +92,9 @@ Fast Sync Mode는 Full Sync처럼 모든 블록 데이터(headers, transactions,
 - 매 블록마다 지속적으로 변경되는 state trie를 지속적으로 동기화해야 합니다. (심지어 다운로드하는중에 필요없어지기도 합니다) 끝없는 `Imported state entries [...]` 로그를 통해 확인 가능합니다.
 - 엄청난 양의 Disk Write 작업이기 때문에 성능이 좋은 SSD를 사용해야 합니다. (HDD라면... 😢)
 
+<br/>
 
-### Geth의 State 정리(Pruning) 전략
+## Geth의 State 정리(Pruning) 전략
 
 [Geth Command Line Option](https://geth.ethereum.org/docs/interface/command-line-options) 
 ```bash
@@ -144,9 +149,6 @@ Pruning이 어려운 작업인 이유
 
 ----
 
-<br/>
-
-[이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/) 추천합니다.
 
 모든 내용은 요약되었기 때문에, 아래 링크를 통해 자세한 내용을 읽어보는 것을 추천합니다. 
 

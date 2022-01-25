@@ -6,6 +6,20 @@ category: blockchain
 draft: false
 ---
 
+먼저 문서에 오류가 있을 수 있음을 밝힙니다. 수정 요청 부탁드립니다! 
+
+두번째로, 이 문서는 여러 출처의 글을 정리한 글입니다. Geth 코드 레벨 이해를 담고 있지 않습니다.
+
+## 목차
+
+1. 이더리움 상태(State)란 무엇일까?
+2. [Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 
+3. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
+
+
+## 이더리움의 상태란?
+
+
 이더리움은 Account-based 블록체인입니다. 
 
 이더리움에서 상태란 Account의 상태입니다. 각 Account는 Balance, Nonce 그리고 Smart Contract의 Data Store를 상태값으로 가집니다. (”배포된” 스마트 컨트랙트도 Account 입니다) 
@@ -83,9 +97,15 @@ Leaf Node의 Account가, 블록헤더에 State Root(Hash)가 포함되어 있는
 
 <br/>
 
-----
+### Q. MPT구조가 아닌 다른 구조로 Gloabal State를 구성하면 어떻게 되나요?
 
-[Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 추천합니다.
+- (의견) 이더리움 백서에 정의되지 않은 구현체를 만들 수 는 없겠지만, 만약 이 변경때문에 RootHash가 달라지면, 하드포크하는것과 마찬가지라고 생각합니다.
+
+<br/>
+
+---
+
+<br/>
 
 모든 내용은 요약되었기 때문에, 아래 링크를 통해 자세한 내용을 읽어보는 것을 추천합니다. 
 

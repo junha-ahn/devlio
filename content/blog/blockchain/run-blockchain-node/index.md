@@ -1,6 +1,6 @@
 ---
 title: 블록체인 노드를 운영하다.
-date: "2022-02-04T15:32:58.145Z"
+date: "2022-02-04T08:30:13.184Z"
 description: "블록체인 네트워크에 참여한다면..."
 category: blockchain
 draft: false

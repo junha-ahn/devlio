@@ -55,6 +55,10 @@ draft: false
 - [homepage](https://github.com/bbaguette-world/bbaguette-homepage): 홈페이지 전체 소스코드(www.bbaguette.xyz)
 - [bbgt-nft-metadata-api](https://github.com/bbaguette-world/bbgt-nft-metadata-api): 랜덤 뽑기의 순수함을 지키기 위한 프로젝트 (README 참고)
 
+<br/>
+
+NFT 이미지는 [hashlips-engine](https://youtu.be/fzH7Gjadmj0)을 통해 만들었습니다.
+
 ## Bbaguette Contract
 
 ERC20, ERC721, Sale Contract 정말 모든걸 [clonesnerverdie](https://github.com/clonesneverdie/CND-contracts)를 참고(=복붙)했습니다!

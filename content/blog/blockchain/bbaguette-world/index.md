@@ -157,7 +157,7 @@ contract NFTSale {
 
 
 ![how-to-transfer](./how-to-transfer.png)
-> 에초에 민팅 완판을 생각못해서 'Transfer' 기능을 만들 생각을 못했다...
+> 에초에 민팅 완판을 생각못해서 'Transfer' 기능을 만들 생각을 못했다... (02.07 추가되었습니다!)
 
 ![airdrop](./airdrop.png)
 > 많은 사람이 민팅에 참여할 수 있게 '에어드랍'까지 도와주신 스페셜 어드바이저님 최고!!
@@ -166,14 +166,16 @@ contract NFTSale {
 
 <br/>
 
-멋있게 'NFT의 가치', '커뮤니티의 가치' 아니면 '메타버스란 무엇인가' 말하고 싶지만, 사실 잘 모르겠고...
+멋있게 'NFT의 가치', '커뮤니티의 가치' 아니면 '메타버스란 무엇인가' 말하고 싶지만...
 
-"2달동안 프로젝트 같이 하면서 매우 재밌게 즐겼다"입니다! 
+사실 잘 모르겠고, 2달동안 프로젝트 같이 하면서 매우 재밌게 즐겼습니다.
 
 특히 사람들이 재밌어하니까 너무 뿌듯하네요!
 
+<br/>
+
 ![open-world](./open-world.png)
-> To be continue...
+> Bbaguette World' To be continue...
 
 ##  그래서 얼마를 벌었나요? 
 
@@ -192,4 +194,11 @@ contract NFTSale {
 <br/>
 
 ![1POP](./1POP.png)
+
+## But, We Had a Special Party
+
+![Meetup](./Meetup.png)
+
+
+
 

@@ -1,6 +1,6 @@
 ---
 title: 밑바닥부터 만드는 컴퓨팅 시스템 회로도
-date: "2022-08-27T10:16:25.434Z"
+date: "2022-11-29T14:23:54.150Z"
 description: "XOR gate to 16-bit 6-opcode CPU"
 category: os
 draft: false

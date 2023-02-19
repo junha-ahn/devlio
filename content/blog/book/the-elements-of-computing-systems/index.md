@@ -1,6 +1,6 @@
 ---
 title: <밑바닥부터 만드는 컴퓨팅 시스템> 후기
-date: "2021-08-25T05:15:58.678Z"
+date: "2023-02-19T01:01:41.528Z"
 description: "NAND 게이트부터 CPU, Compiler, OS까지 만들어보는 책"
 category: book
 draft: false

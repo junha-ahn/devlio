@@ -199,6 +199,17 @@ contract NFTSale {
 
 ![Meetup](./Meetup.png)
 
+<br/>
+
+# Popcateum Grants
+> 23.03.04 내용 추가
+
+감사하게도 [Popcateum Grants](https://medium.com/popcateum/popcateum-grants-bbaguette-project-6dcc67a976d6)에 선정되었습니다!
+
+팝캣티움 최고! 빠게트 최고!
+
+![grant](./grant.png)
+
 
 
 

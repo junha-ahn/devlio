@@ -14,6 +14,8 @@ draft: false
 
 코드 및 테스트 결과는 [Nand2Tetris](https://github.com/junha-ahn/Nand2Tetris-Study)에서 확인 가능합니다.
 
+책 후기는 [<밑바닥부터 만드는 컴퓨팅 시스템> 후기](/book/the-elements-of-computing-systems/)에서 확인 가능합니다.
+
 ## Chapter 1
 
 ### XOR

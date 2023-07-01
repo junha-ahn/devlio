@@ -27,10 +27,10 @@ draft: false
 뭔가 대책이 필요하다고 생각했다. 
 
 그러다가 갑자기 '대용량' 관련된 키워드로 Flab이 생각났다. 
-- 한마디로 주니어 개발자를 네카쿠배라로 보내는 부트캠프
 
 ![flab](./images/flab.png)
-> Flab 백엔드 과정 소개
+
+> Flab 백엔드 과정 소개 - 한마디로 주니어 개발자를 네카쿠배라로 보내는 부트캠프
 
 
 ## 그렇다면 내가 직접 FLab의 과정을 따라해보면 어떨까?
@@ -98,4 +98,4 @@ draft: false
 나중에 군생활 후기에 마동마동(=마라톤동아리 두번 외치기)와 프동프동(= Flab 동아리 2번 외치기) 모두 성공했다고 말하고 싶다!
 
 # 참고 
-- https://github.com/f-lab-clone
+- https://github.com/f-lab-clone/ticketing-service

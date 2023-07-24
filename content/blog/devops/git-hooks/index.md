@@ -22,20 +22,7 @@ Git hooks는 사용하고 싶고, `pre-commit`이나 `husky`는 **설치하고 �
 
 # 커밋 메세지 컨벤션 체크하기
 
-**prepare-commit-msg** hook을 사용해 커밋 메세지 컨벤션을 체크한다
-
-```javascript
-(feat|fix|refactor|style|docs|test|chore):.{1,50}(\n.{1,72})?$
-```
-> [commit-regular.txt](https://github.com/f-lab-clone/ticketing-service/blob/main/.github/commit-regular.txt)
-
-<br/>
-
-위 파일은 정규표현식으로 향후 커밋 메세지를 체크할때 사용한다 
-- 어떤 의미인지는 해당 [템플릿](https://github.com/f-lab-clone/ticketing-service/blob/main/commit-msg-template.txt)을 통해 확인 가능하다
-- 이렇게 별도 파일로 구성한 이유는 해당 정규표현식을 `Git Actions`를 통한 CI 작업에도 사용하기 때문이다
-
-<br/>
+prepare-commit-msg hook을 사용해 커밋 메세지 컨벤션을 체크한다
 
 ```shell
 #!/bin/sh
@@ -62,6 +49,18 @@ fi
 <br/>
 
 간단히 말해 해당 파일을 `.git/hooks/prepare-commit-msg` 위치에 작성하면, Git이 알아서 `git commit` 마다 **컨벤션 체크가 동작**한다!
+
+
+```javascript
+(feat|fix|refactor|style|docs|test|chore):.{1,50}(\n.{1,72})?$
+```
+> [commit-regular.txt](https://github.com/f-lab-clone/ticketing-service/blob/main/.github/commit-regular.txt)
+
+<br/>
+
+위 파일은 정규표현식으로 향후 커밋 메세지를 체크할때 사용한다 
+- 어떤 의미인지는 해당 [템플릿](https://github.com/f-lab-clone/ticketing-service/blob/main/commit-msg-template.txt)을 통해 확인 가능하다
+- 이렇게 별도 파일로 구성한 이유는 해당 정규표현식을 `Git Actions`를 통한 CI 작업에도 사용하기 때문이다
 
 
 # IDE에서 자동으로 세팅하기 (Devconainer, Gradle)

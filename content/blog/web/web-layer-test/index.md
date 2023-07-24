@@ -80,7 +80,7 @@ draft: false
 
 # 각 레이어별 테스트
 
-Spring Boot의 Web Layer Test는 본질적으로 `Application Context`(Spring의 DI/IoC Container)를 구성하기에 (순수한) 단위 테스트가 아니라고 생각할 수 있다. 하지만 이 글에서는 구글의 정의를 참조하기 때문에 **실행되는 코드**가 아니라 **검증되는 코드**에 집중한다. 또한 Mock Object(Bean)은 의존성을 제거하는 기술로 이해한다.
+Spring Boot의 Web Layer Test는 본질적으로 `Application Context`(Spring의 DI/IoC Container)를 구성하기에 (순수한) 단위 테스트가 아니라고 생각할 수 있다. 하지만 이 글에서는 구글의 정의를 참조하기 때문에 **실행되는 코드**가 아니라 **검증되는 코드**에 집중한다. 또한 `MockBean`은 의존성을 제거하는 기술로 이해한다.
 
 ## Controller 
 
@@ -170,4 +170,7 @@ DB instance와 상호작용또한 검증하기 때문에, **통합테스트이�
 - 구글 엔지니어는 이렇게 일한다 - 한빛미디어
 - [컨트롤러-서비스 테스트 코드](https://github.com/f-lab-clone/ticketing-service/pull/28)
 - [레퍼지토리 테스트 코드](https://github.com/f-lab-clone/ticketing-service/pull/44)
+
+# 참고
+- [간단한 API를 TDD로 만들어보기 (with Nest.js)](/nodejs/simple-tdd-with-nestjs/)
 - [Spring boot tip 레이어별 테스트](https://github.com/HomoEfficio/dev-tips/blob/master/Spring-Boot-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%ED%85%8C%EC%8A%A4%ED%8A%B8.md)

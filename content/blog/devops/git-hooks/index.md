@@ -14,9 +14,6 @@ draft: false
 4. git actions에서도 사용하기 
 5. Lint 해보기 (pre-commit)
 
-출처
-- 예시 프로젝트 링크 (파일은 각각 내용 아래 첨부) 
-
 # 그냥 설치하기 싫었다
 
 Git hooks는 사용하고 싶고, `pre-commit`이나 `husky`는 **설치하고 싶지 않았다**
@@ -27,12 +24,12 @@ Git hooks는 사용하고 싶고, `pre-commit`이나 `husky`는 **설치하고 �
 
 **prepare-commit-msg** hook을 사용해 커밋 메세지 컨벤션을 체크한다
 
-<br/>
-
 ```javascript
 (feat|fix|refactor|style|docs|test|chore):.{1,50}(\n.{1,72})?$
 ```
 > [commit-regular.txt](https://github.com/f-lab-clone/ticketing-service/blob/main/.github/commit-regular.txt)
+
+<br/>
 
 위 파일은 정규표현식으로 향후 커밋 메세지를 체크할때 사용한다 
 - 어떤 의미인지는 해당 [템플릿](https://github.com/f-lab-clone/ticketing-service/blob/main/commit-msg-template.txt)을 통해 확인 가능하다
@@ -88,8 +85,6 @@ fi
 ```
 > [devcontainer.json](https://github.com/f-lab-clone/ticketing-service/blob/main/.devcontainer/devcontainer.json)
 
-<br/>
-
 ```shell
 cp .github/hooks/prepare-commit-msg .git/hooks/prepare-commit-msg
 chmod +x .git/hooks/prepare-commit-msg
@@ -124,7 +119,7 @@ tasks.build {
 
 해당 파일은 코틀린으로 작성되었으며 특정 Gradle 버전마다 다른 형식을 사용할 수 있다
 
-단점이지만, `graldew build` 실행 후 세팅되기 때문에 **만약 빌드를 안하면 세팅되지 않는다!**
+단점: `graldew build` 실행시 세팅되기 때문에 **만약 빌드를 안하면 세팅되지 않는다!**
 
 # Git Actions에서도 사용하기
 
@@ -208,4 +203,4 @@ fi
 
 <br/>
 
-Ktlint를 예시로 사용했다!
+`Ktlint`를 예시로 사용했다!

@@ -14,9 +14,12 @@ draft: false
 
 # 서론
 
-이 글은 Spring Boot(Kotlin)를 통해 Web-3-Layer 중 어떤 레이어 테스트가 무슨 테스트라고 생각하는지를 정리하는 글이다.
 
 <img src="./기본.png" width="50%" height="50%" title="기본"/>
+
+<br/>
+
+이 글은 Spring Boot(Kotlin)를 통해 Web-3-Layer 중 어떤 레이어 테스트가 무슨 테스트라고 생각하는지를 정리하는 글이다.
 
 사실 단위 테스트와 통합 테스트는 개념상 정의기 때문에, 구분하기 불분명한 부분이 분명히 존재한다.
 
@@ -77,7 +80,7 @@ draft: false
 
 # 각 레이어별 테스트
 
-정의에 따라서는 Spring Boot의 Web Layer Test는 본질적으로 `Application Context`(Spring의 DI/IoC Container)를 구성하기에 (순수한) 단위 테스트가 아니라고 생각할 수 있다. 하지만 이 글에서는 구글의 정의를 참조하기 때문에 **실행되는 코드**가 아니라 **검증되는 코드**에 집중한다. 또한 Mock Object(Bean)은 의존성을 제거하는 기술로 이해한다.
+Spring Boot의 Web Layer Test는 본질적으로 `Application Context`(Spring의 DI/IoC Container)를 구성하기에 (순수한) 단위 테스트가 아니라고 생각할 수 있다. 하지만 이 글에서는 구글의 정의를 참조하기 때문에 **실행되는 코드**가 아니라 **검증되는 코드**에 집중한다. 또한 Mock Object(Bean)은 의존성을 제거하는 기술로 이해한다.
 
 ## Controller 
 
@@ -99,7 +102,7 @@ draft: false
 
 <br/>
 
-이러한 컨트롤러 테스트는 단위테스트와 통합 테스트 사이에 위치한 무엇인가이며, 구글에 정의에 따르면 **작은크기 - 좁은 범위 테스트**이다.
+이러한 컨트롤러 테스트는 단위테스트와 통합 테스트 사이에 위치한 무엇인가이며, 구글에 정의에 따르면 **작은크기 - 좁은 범위 테스트**
 
 <img src="./컨트롤러테스트.png" width="50%" height="50%" title="컨트롤러테스트"/>
 
@@ -138,13 +141,14 @@ draft: false
 
 <br/>
 
-특정 기술을 통해 In-memory database(H2)로 대체해 테스트하는 경우에도 이와 마찬가지 문제가 발생한다. 그렇다고 매번 테스트마다 Localhost에 Database를 setup할 수는 없다.
-> 만약 Localhost의 Database에 테스트를 의존한다면, 테스트 환경이 달라졌을때 고생... (Git actions 등등을 사용한다고 생각해보면...)
+특정 기술을 통해 In-memory database(`H2`)로 대체해 테스트하는 경우에도 위와 마찬가지 문제가 발생한다. 그렇다고 매번 테스트마다 Localhost에 Database를 setup할 수는 없다.
+> 만약 Localhost의 Database에 테스트를 의존한다면, 테스트 환경이 달라졌을때 고생을 생각한다면 (Git actions 등등을 사용한다고 생각해보면...)
 
 <br/>
 
 크기나 범위의 정위와 무관하게 **모든 테스트는 밀폐되어야 한다**. 
 - setup, execute, tear down 하는데 필요한 모든 정보를 담고 있어야 한다.
+- 그렇기에 local DB가 아니라 Testcontainers를 사용했다 (물런 Docker에 의존하긴한다...)
 
 <br/>
 
@@ -166,4 +170,4 @@ DB instance와 상호작용또한 검증하기 때문에, **통합테스트이�
 - 구글 엔지니어는 이렇게 일한다 - 한빛미디어
 - [컨트롤러-서비스 테스트 코드](https://github.com/f-lab-clone/ticketing-service/pull/28)
 - [레퍼지토리 테스트 코드](https://github.com/f-lab-clone/ticketing-service/pull/44)
-- [Spring boot tip 레이어별 테스트]
+- [Spring boot tip 레이어별 테스트](https://github.com/HomoEfficio/dev-tips/blob/master/Spring-Boot-%EB%A0%88%EC%9D%B4%EC%96%B4%EB%B3%84-%ED%85%8C%EC%8A%A4%ED%8A%B8.md)

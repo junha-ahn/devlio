@@ -1,7 +1,7 @@
 ---
 title: Terraform으로 Kubernetes Pod에 Secret 주입하기 (AWS Secret Manager with EKS)
 date: "2023-09-24T03:56:20.878Z"
-description: "#Terraform #Helm #SecretManager"
+description: "#Terraform #Helm #AWS #SecretManager #EKS"
 category: devops
 draft: false
 ---
@@ -10,9 +10,7 @@ draft: false
 
 AWS EKS에 Backend Pod에는 DB PASSWORD 등 여러 환경변수가 필요합니다. 
 
-어떻게 EKS Pod에 ENV를 주입할 수 있을까요? 이 모든 과정을 Terraform으로 진행하겠습니다.
-
-[이슈](https://github.com/f-lab-clone/ticketing-infra/issues/4)와 [PR](https://github.com/f-lab-clone/ticketing-infra/pull/45)에서 실제 작업을 진행했습니다. 
+어떻게 EKS Pod에 ENV를 주입할 수 있을까요? 이 모든 과정을 Terraform으로 진행하겠습니다. ([이슈](https://github.com/f-lab-clone/ticketing-infra/issues/4)와 [PR](https://github.com/f-lab-clone/ticketing-infra/pull/45)에서 실제 작업을 진행했습니다)
 
 ```dotenv
 spring.datasource.url=jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_SCHEMA}?createDatabaseIfNotExist=true
@@ -211,20 +209,6 @@ spec:
     data:
     - key: "MYSQL_PASSWORD"
       objectName: "MYSQL_PASSWORD"
-    - key: "MYSQL_USERNAME"
-      objectName: "MYSQL_USERNAME"
-    - key: "MYSQL_HOST"
-      objectName: "MYSQL_HOST"
-    - key: "MYSQL_PORT"
-      objectName: "MYSQL_PORT"
-    - key: "MYSQL_SCHEMA"
-      objectName: "MYSQL_SCHEMA"
-    - key: "JWT_SECRET"
-      objectName: "JWT_SECRET"
-    - key: "JWT_EXPIRATION_HOURS"
-      objectName: "JWT_EXPIRATION_HOURS"
-    - key: "JWT_ISSUER"
-      objectName: "JWT_ISSUER"
   parameters:
     objects: |
         - objectName: development/ticketing-secret
@@ -232,20 +216,6 @@ spec:
           jmesPath:
             - path: "MYSQL_PASSWORD"
               objectAlias: "MYSQL_PASSWORD"
-            - path: "MYSQL_USERNAME"
-              objectAlias: "MYSQL_USERNAME"
-            - path: "MYSQL_HOST"
-              objectAlias: "MYSQL_HOST"
-            - path: "MYSQL_PORT"
-              objectAlias: "MYSQL_PORT"
-            - path: "MYSQL_SCHEMA"
-              objectAlias: "MYSQL_SCHEMA"
-            - path: "JWT_SECRET"
-              objectAlias: "JWT_SECRET"
-            - path: "JWT_EXPIRATION_HOURS"
-              objectAlias: "JWT_EXPIRATION_HOURS"
-            - path: "JWT_ISSUER"
-              objectAlias: "JWT_ISSUER"
 ```
 
 ## Pod에 적용하기
@@ -291,4 +261,4 @@ spec:
 
 ## 완료
 
-![log](./log.jpg)
+![log](./log.png)

@@ -26,7 +26,7 @@ ticketing.jwt.issuer=${JWT_ISSUER}
 
 # 간단한 사전지식
 
-더 자세한 설명은 https://kim-dragon.tistory.com/279(출처) 를 참고해주세요
+더 자세한 설명은 [출처](https://kim-dragon.tistory.com/279) 를 참고해주세요
 
 ### Service Account란?
 

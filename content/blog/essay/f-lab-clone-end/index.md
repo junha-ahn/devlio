@@ -19,9 +19,15 @@ draft: false
 
 사실 시작글에서도 언급했지만 전원 현역 군인이자 같은 생활관에서 생활하는 소프트웨어 개발병이기 때문에, 매일 매일 같은 방에서 이야기 하고 사지방으로 가서 열심히 작업했다.
 
-주말을 회의 날짜로 잡고 가장 기본적인 [브랜칭 모델](https://github.com/f-lab-clone/ticketing-backend/wiki/Convention#branch-strategy)을 따라 이슈를 관리하며 매일 매일 개발 사이클을 이어나갔다.
+주말을 회의 날짜로 잡고 가장 기본적인 [브랜칭 모델](https://github.com/f-lab-clone/ticketing-backend/wiki/Convention#branch-strategy)을 따라 이슈를 관리하며 PR 리뷰도 하고, 매일 매일 개발 사이클을 이어나갔다.
 
 ![issue](./images/issue.png)
+![pr](./images/pr.png)
+
+<br/>
+
+![review1](./images/review1.png)
+![review2](./images/review2.png)
 
 ## 기억에 남는 이슈
 
@@ -58,6 +64,8 @@ draft: false
 
 ![report](./images/report.png)
 > [#3-performance-test-report](https://github.com/f-lab-clone/ticketing-backend#3-performance-test-report)
+
+> 수치적으로 말하면 [테스트 목표](https://github.com/f-lab-clone/ticketing-infra/issues/62#issuecomment-1736618921)는 [인터파크 최고 트래픽](https://zdnet.co.kr/view/?no=20230915101820)의 `0.001%`였으나 실패했다! 
 
 <br/>
 

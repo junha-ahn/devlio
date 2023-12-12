@@ -98,4 +98,5 @@ draft: false
 나중에 군생활 후기에 마동마동(=마라톤동아리 두번 외치기)와 프동프동(= Flab 동아리 2번 외치기) 모두 성공했다고 말하고 싶다!
 
 # 참고 
-- https://github.com/f-lab-clone/ticketing-service
+- [ticketing-backend](https://github.com/f-lab-clone/ticketing-backend/blob/main/README.md)
+- [우당탕탕 개발 부트캠프 수료식](/essay/f-lab-clone-end) 

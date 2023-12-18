@@ -10,7 +10,7 @@ draft: false
 
 ## 1. `1,999,999.999999999983222784` 
 
-KLAY 입금을 처리 하는 중 `1,999,999.999999999983222784 KLAY` 입금 트랜잭션이 여러 로직을 Javascript 로직을 타면서 `2,000,000 KLAY` 입금으로 처리되어버렸다.
+KLAY 입금을 처리 하는 중 `1,999,999.999999999983222784 KLAY` 입금 트랜잭션이 여러 Javascript 로직을 타면서 `2,000,000 KLAY` 입금으로 처리되어버렸다.
 
 예를들면 아래와 같은 로직의 문제였을 것이다. 
 ```javascript
@@ -28,7 +28,10 @@ Math.floor("1999999.999999999983222784") // 2,000,000
 
 ```javascript
 // import 'sequelize'
-const bigAmount = new BigNumber(tx.amount).multipliedBy(scaleFactor);
+
+const bigAmount = new BigNumber(tx.amount)
+  .multipliedBy(scaleFactor)
+  .integerValue(BigNumber.ROUND_DOWN);
 await transferHistory.create({
   ...
   amount: bigAmount.toNumber(),
@@ -39,6 +42,6 @@ await transferHistory.create({
 
 Javascript로 큰 수를 다룰때는 절대 기본 Number 자료형을 사용하지 말자. 안전하게 String 형식으로 숫자 데이터를 처리하자. (`bignumber.js` 등의 라이브러리)
 
-기본적으로 Bignumber.js를 사용하면서도 위 사례와 같이 DB Insert 또는 소수점 내림 처리 등 일부 연산을 Number 자료형을 사용하는 실수가 있을 수 있다. 처음부터 끝까지 놓치는 부분 없이 사용해야 한다.
+Bignumber.js를 사용하면서도 위 사례와 같이 일부 연산 후 Number 자료형을 사용할 수 있는데, 처음부터 끝까지 놓치는 부분 없이 String을 사용해야 한다.
 
-그리고 소수점의 경우 시스템의 최소자리수를 정하고 무조건 내림처리한다. (입금의 경우 반올림, 올림을 사용할 수 없다. 없는 돈을 만들어 줄 수는 없다)
+그리고 소수점의 경우 시스템의 최소자리수를 정하고 무조건 내림처리한다. (입금의 경우 반올림, 올림을 사용할 수 없다. 즉 없는 돈을 만들어 줄 수는 없다)

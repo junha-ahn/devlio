@@ -1,7 +1,7 @@
 ---
 title: 초특급 개발 부트캠프 입소식
 date: "2023-06-30T11:07:16.480Z"
-description: "초특급 개발 부트캠프 '프동프동' 에 입소한걸 환영한다" - 사이드 프로젝트입니다
+description: 진짜 부트캠프 아닙니다. 사이드 프로젝트입니다
 category: essay
 draft: false
 ---

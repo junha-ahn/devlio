@@ -1,7 +1,7 @@
 ---
 title: 우당탕탕 개발 부트캠프 수료식
 date: "2023-11-26T14:28:44.404Z"
-description: "우당탕탕 '프동프동' 수료식!" (부트캠프 아닙니다. 사이드 프로젝트입니다)
+description: "우당탕탕 '프동프동' 수료식!" (사이드 프로젝트입니다)
 category: essay
 draft: false
 ---

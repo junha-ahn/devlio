@@ -6,12 +6,15 @@ category: essay
 draft: false
 ---
 
+> 진짜 부트캠프 아닙니다. 사이드 프로젝트입니다.
+
 ![intro](./images/intro.gif)
 ![infra](./images/infra.png)
 
 [초특급 개발 부트캠프 입소식](/essay/f-lab-clone-start) 글에서 당차게 시작했던 우당탕탕 부트캠프가 끝났다. 
 
 '대규모 트래픽', '초특급', '3개월' 무엇도 아니였지만... 어쨌든 끝냈다!
+
 
 > [프로젝트 README.md](https://github.com/f-lab-clone/ticketing-backend)
 

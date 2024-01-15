@@ -152,3 +152,9 @@ draft: false
 정말 재밌었고 진심으로 30대에 다시 6개월간 소프트웨어 개발병으로 생활하고 싶습니다 (이 조건은 **AND 조건**입니다 모두 맞아야 다시 돌아갑니다)
 
 해상병 681기 필승! 해군 소프트웨어개발병 필승!
+
+
+## 다른 해군 SW개발병 후기
+
+- [Paco Kwon](https://www.pacokwon.org/posts/20230415-after-navy-software-developer)
+- [enKODING](https://enkoding.tistory.com/entry/%ED%95%B4%EA%B5%B0%EB%B3%91-682%EA%B8%B0-SW-%EA%B0%9C%EB%B0%9C%EB%B3%91-%EB%B3%B5%EB%AC%B4-%ED%9B%84%EA%B8%B0)

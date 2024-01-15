@@ -158,3 +158,4 @@ draft: false
 
 - [Paco Kwon](https://www.pacokwon.org/posts/20230415-after-navy-software-developer)
 - [enKODING](https://enkoding.tistory.com/entry/%ED%95%B4%EA%B5%B0%EB%B3%91-682%EA%B8%B0-SW-%EA%B0%9C%EB%B0%9C%EB%B3%91-%EB%B3%B5%EB%AC%B4-%ED%9B%84%EA%B8%B0)
+- [Jeongseop Park](https://www.linkedin.com/feed/update/urn:li:activity:7146501066002415616/)

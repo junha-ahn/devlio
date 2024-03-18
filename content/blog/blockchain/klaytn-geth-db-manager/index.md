@@ -140,8 +140,6 @@ Migration은 Klaytn에만 존재하는 기능이다.
 
 # 마치며
 
-
-
 ![chat1](./images/chat1.png) 
 > 팀 내부 채팅 中
 
@@ -151,3 +149,9 @@ Geth와 같은 방대한 양의 코드를 읽는것은 익숙치 않은 작업�
 
 ![IMG_6521](./images/IMG_6521.jpeg) 
 > 다만 그럼에도 아직까지 '표면적 지식'에서 '계획 지식'까지 효과적으로 넘어가는 방법은 잘 모르겠습니다. 이런 경험을 반복하다 보면 더 발전할 것이라고 믿습니다.
+
+# 참고
+- [klaytn](https://github.com/klaytn/klaytn)
+- [go-ethereum-code-analysis/ethdb-analysis](https://github.com/agiletechvn/go-ethereum-code-analysis/blob/master/ethdb-analysis.md)
+- [K. Jezek, “Ethereum Data Structures”](https://arxiv.org/pdf/2108.05513/1000.pdf)
+- [sigmoid posts](https://steemit.com/@sigmoid/posts)

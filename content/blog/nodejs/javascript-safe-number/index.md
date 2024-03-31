@@ -3,7 +3,7 @@ title: 자바스크립트에서 큰 숫자 처리하기 (실제 입금처리 문
 date: "2023-12-17T06:43:51.660Z"
 description: "Bignumber.js 쓰세요. 제발"
 category: nodejs
-draft: false
+draft: true
 ---
 
 실제 업무 중 만났던 두 가지 케이스에 대해 간단하게 작성 해본다.

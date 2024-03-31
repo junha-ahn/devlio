@@ -37,7 +37,7 @@ draft: false
 
 Genesis 블록은 위 과정을 통해 만들어집니다.
 
-### 359. g.ToBlock(baseStateRoot, db)
+### 359. `g.ToBlock(baseStateRoot, db)`
 
 ```go
 block := g.ToBlock(baseStateRoot, db)
@@ -45,9 +45,9 @@ block := g.ToBlock(baseStateRoot, db)
 
 위 함수를 통해 `chaindata/statetrie`가 생성됩니다.
 
-### 363. db.WriteTd(block.Hash(), block.NumberU64(), g.BlockScore)
+### 363. `db.WriteTd(block.Hash(), block.NumberU64(), g.BlockScore)`
 
-```shell
+```go
 [680000000000000000f484ef9414585f80efa4918c1d43859073556022a6394da54d4e86b5b485cf4a74, 01]
 
 db.WriteTd(block.Hash(), block.NumberU64(), g.BlockScore)
@@ -70,7 +70,7 @@ blockNum: 0000000000000000
 blockHash: f484ef9414585f80efa4918c1d43859073556022a6394da54d4e86b5b485cf4a74
 ```
 
-### 364. db.WriteBlock(block)
+### 364. `db.WriteBlock(block)`
 
 ```go
 // storage/database/db_manager.go
@@ -108,7 +108,7 @@ db.WriteBlock(block)
 ```
 
 
-### 365. db.WriteReceipts(block.Hash(), block.NumberU64(), nil)
+### 365. `db.WriteReceipts(block.Hash(), block.NumberU64(), nil)`
 
 
 ```go
@@ -119,7 +119,7 @@ db.WriteReceipts(block.Hash(), block.NumberU64(), nil)
 ```
 
 
-### 366. db.WriteCanonicalHash(block.Hash(), block.NumberU64())
+### 366. `db.WriteCanonicalHash(block.Hash(), block.NumberU64())`
 
 
 ```go
@@ -130,7 +130,7 @@ db.WriteCanonicalHash(block.Hash(), block.NumberU64())
 - [value] genesisBlockHash
 ```
 
-### 367. db.WriteHeadBlockHash(block.Hash())
+### 367. `db.WriteHeadBlockHash(block.Hash())`
 
 
 ```go
@@ -140,7 +140,7 @@ db.WriteHeadBlockHash(block.Hash())
 - db.Put(headBlockKey, hash.Bytes())
 ```
 
-### 368. WriteHeadHeaderHash
+### 368. `WriteHeadHeaderHash`
 
 
 ```go
@@ -159,7 +159,7 @@ db.WriteChainConfig(block.Hash(), config)
 - db.Put(configKey(hash), data); // key: 6b6c61792d636f6e6669672df484ef9414585f80efa4918c1d43859073556022a6394da54d4e86b5b485cf4a
 ```
 
-### eth.getBlock(0)
+### eth.getBlock(`0)`
 
 ```shell
 > eth.getBlock(0)

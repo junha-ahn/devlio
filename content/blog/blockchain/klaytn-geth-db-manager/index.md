@@ -10,7 +10,7 @@ draft: false
 > 해당 시리즈는 [Klaytn Dev Ambassador](https://medium.com/klaytn-kr/klaytn%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9B%8C%EC%A7%84-klaytn-ambassador-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%84-%EC%86%8C%EA%B0%9C%ED%95%A9%EB%8B%88%EB%8B%A4-f654df403123) Core Development Project 과정 학습 내용을 공유하기 위한 목적으로 작성하였습니다. 
 
 1. 클레이튼맛 Geth의 데이터베이스 얕게 훑어보기
-2. [클레이튼맛 Geth의 데이터 분석하기](/blockchain/klaytn-geth-db-data/)
+2. [클레이튼맛 Geth의 데이터 살펴보기](/blockchain/klaytn-geth-db-data/)
 
 # 들어가며 
 

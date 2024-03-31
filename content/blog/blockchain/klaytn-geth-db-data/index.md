@@ -47,24 +47,17 @@ block := g.ToBlock(baseStateRoot, db)
 
 ### 363. `db.WriteTd(block.Hash(), block.NumberU64(), g.BlockScore)`
 
-```go
-[680000000000000000f484ef9414585f80efa4918c1d43859073556022a6394da54d4e86b5b485cf4a74, 01]
-
-db.WriteTd(block.Hash(), block.NumberU64(), g.BlockScore)
-- [key] headerTDKey(genesisBlockNum, genesisBlockHash)
-```
-
-
-```go
-// headerTDKey = headerPrefix + num (uint64 big endian) + hash + headerTDSuffix
-func headerTDKey(number uint64, hash common.Hash) []byte {
-	return append(headerKey(number, hash), headerTDSuffix...)
-}
-```
+![WriteTd](./images/WriteTd.png) 
 > [storage/database/schema.go](https://github.com/klaytn/klaytn/blob/dev/storage/database/schema.go)
+
 > Key에 Prefix를 붙인다 (이와 같은 방식은 계속 반복된다)
 
 ```shell
+[
+  680000000000000000f484ef9414585f80efa4918c1d43859073556022a6394da54d4e86b5b485cf4a74, 
+  01
+]
+
 headerPrefix:  68
 blockNum: 0000000000000000
 blockHash: f484ef9414585f80efa4918c1d43859073556022a6394da54d4e86b5b485cf4a74

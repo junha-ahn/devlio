@@ -9,15 +9,20 @@ draft: false
 
 # 시리즈
 
-먼저 문서에 오류가 있을 수 있음을 밝힙니다. 수정 요청 부탁드립니다! 
-
-두번째로, 이 문서는 여러 출처의 글을 정리한 글입니다. Geth 코드 레벨 이해를 담고 있지 않습니다.
-
 > 해당 글은 이더리움과 Tree 자료 구조에 대한 기본적 이해를 요구합니다.
 
-1. 이더리움 상태(State)란 무엇일까?
-2. [Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 
-3. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
+#### 기본
+1. [이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/)
+
+#### Geth 동기화
+1. [Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 
+2. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
+
+#### Geth DB
+1. [클레이튼맛 Geth의 데이터베이스 얕게 훑어보기](/blockchain/klaytn-geth-db-manager/)
+2. [클레이튼맛 Geth의 데이터 살펴보기](/blockchain/klaytn-geth-db-data/)
+
+
 
 # 목차
 

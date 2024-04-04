@@ -7,14 +7,23 @@ draft: false
 ---
 
 # 시리즈
-> 해당 시리즈는 [Klaytn Dev Ambassador](https://medium.com/klaytn-kr/klaytn%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9B%8C%EC%A7%84-klaytn-ambassador-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%84-%EC%86%8C%EA%B0%9C%ED%95%A9%EB%8B%88%EB%8B%A4-f654df403123) Core Development Project 과정 학습 내용을 공유하기 위한 목적으로 작성하였습니다. 
+
+#### 기본
+1. [이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/)
+
+#### Geth 동기화
+1. [Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 
+2. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
+
+#### Geth DB
+> 해당 시리즈는 Geth DB 시리즈는 [Klaytn Dev Ambassador](https://medium.com/klaytn-kr/klaytn%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9B%8C%EC%A7%84-klaytn-ambassador-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%84-%EC%86%8C%EA%B0%9C%ED%95%A9%EB%8B%88%EB%8B%A4-f654df403123) Core Development Project 과정 학습 내용을 공유하기 위한 목적으로 작성하였습니다. 
 
 1. [클레이튼맛 Geth의 데이터베이스 얕게 훑어보기](/blockchain/klaytn-geth-db-manager/)
-2. 클레이튼맛 Geth의 데이터 살펴보기
-
+2. [클레이튼맛 Geth의 데이터 살펴보기](/blockchain/klaytn-geth-db-data/)
 
 # 목차
 - 들어가며
+- 가장 간단하게 살펴보기
 - Genesis Setup Data 분석
 - Transaction Broadcast Data 분석
 - 마치며
@@ -31,12 +40,57 @@ draft: false
 
 모든 과정은 [klaytn-geth-db-analysis](https://github.com/junha-ahn/klaytn-geth-db-analysis)를 통해 재현 가능하다.
 
+# 가장 간단하게 살펴보기
+
+![db_manager_structure](./images/db_manager_structure.png) 
+
+다시 이전 글에서 살펴봤던 기본 구조를 참고하자.
+
+결국, 어떠한 Key Value가 Disk에 저장된다.
+
+그렇다면 어떤 데이터가 저장될까?
+
+<br/>
+
+![simpledata1](./images/simpledata1.png) 
+
+> 해당 코드는 [db_manager.go](https://github.com/klaytn/klaytn/blob/dev/storage/database/db_manager.go)에서 확인 가능하다
+
+이러한 Key Value 구조는 전체 chaindata에서 반복된다.
+
+![simpledata2](./images/simpledata2.png) 
+
+위 이미지에서, 파란색 영역의 마지막 숫자(Block Number)가 계속 증가하는 것을 확인 가능하다.
+
+<br/>
+
+![dataadd](./images/dataadd.png) 
+
+![datasize](./images/datasize.png) 
+
+즉 위와 같은 구조의 데이터가 블록이 생길때마다, 트랜잭션이 생길때마다, 계속 쌓인다.
+
+<br/>
+
+![db_manager_structure](./images/db_manager_structure.png) 
+
+다시 코드 구조를 살펴보자. 
+- Prefix를 붙여서 Key를 만든다
+- Block, Tx와 같은 복잡한 데이터는 RLP Encoding을 사용해서 저장한다.
+
 # Genesis Setup Data 분석
 > [db_extract/0_genesis_setup](https://github.com/junha-ahn/klaytn-geth-db-analysis/blob/main/extract/0_genesis_setup.txt)
+
+
+이젠 조금 더 복잡하게 코드를 통해 데이터가 어떻게 쌓이는지 분석해본다. 
+
+> 지금부터 내용은 코드 한줄 한줄을 분석했기 때문에 읽기 힘들다. 필요가 없다면 읽지 않는 것을 추천한다.
 
 ![Commit](./images/Commit.png) 
 
 Genesis 블록은 위 로직을 통해 만들어진다.
+
+<br/>
 
 ### `eth.getBlock(0)`
 

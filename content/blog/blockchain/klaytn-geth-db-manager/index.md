@@ -7,43 +7,42 @@ draft: false
 ---
 
 # 시리즈
-> 해당 시리즈는 [Klaytn Dev Ambassador](https://medium.com/klaytn-kr/klaytn%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9B%8C%EC%A7%84-klaytn-ambassador-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%84-%EC%86%8C%EA%B0%9C%ED%95%A9%EB%8B%88%EB%8B%A4-f654df403123) Core Development Project 과정 학습 내용을 공유하기 위한 목적으로 작성하였습니다. 
 
-1. 클레이튼맛 Geth의 데이터베이스 얕게 훑어보기
+#### 기본
+1. [이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/)
+
+#### Geth 동기화
+1. [Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 
+2. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
+
+#### Geth DB
+> 해당 시리즈는 Geth DB 시리즈는 [Klaytn Dev Ambassador](https://medium.com/klaytn-kr/klaytn%EC%9D%98-%EC%83%88%EB%A1%9C%EC%9B%8C%EC%A7%84-klaytn-ambassador-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%A8%EC%9D%84-%EC%86%8C%EA%B0%9C%ED%95%A9%EB%8B%88%EB%8B%A4-f654df403123) Core Development Project 과정 학습 내용을 공유하기 위한 목적으로 작성하였습니다. 
+
+1. [클레이튼맛 Geth의 데이터베이스 얕게 훑어보기](/blockchain/klaytn-geth-db-manager/)
 2. [클레이튼맛 Geth의 데이터 살펴보기](/blockchain/klaytn-geth-db-data/)
 
 # 들어가며 
 
-이더리움(Geth)은 Key-Value DB를 사용한다. 그리고 이더리움을 포크하여 개발한 Klaytn, Binance Smart Chain, Ronnin 등의 모든 네트워크는 동일한 데이터 구조를 가진다. 
+이더리움(Geth)은 Key-Value DB를 사용한다. 그리고 이더리움을 포크하여 개발한 Klaytn, BSC등의 클라이언트는 동일한 데이터 구조를 가진다. 
 
+![newDatabase](./images/newDatabase.png) 
 
-그 중 가장 자주 들어본 이야기는 'levelDB'라고 하는 구글에서 개발한 데이터베이스를 사용한다는 이야기일 것이다. 
-> 물런 PebbleDB, RocksDB 등 더 다양한 DB가 존재하지만 LevelDB를 통해 글을 작성한다
+Klaytn에서 지원하는 주요 Key-Value DB는 위 이미지와 같다. 그 중 `LevelDB`를 사용한다는 말을 가장 많이 들었을 것 같다.  
 
 ![leveldb](./images/leveldb.png) 
 
 [leveldb](https://github.com/syndtr/goleveldb)는 위와 같은 매우 간단한 인터페이스를 가지고 있다. 
 
-자바스크립트로 구현한다면 아래와 같을 것이다.
-
-```javascript
-const data = await leveldb.Get(parseByte('key'));
-
-await leveldb.Put(parseByte('key'), parseByte('value'));
-
-await leveldb.Delete(parseByte('key'));
-```
-
 필자는 지금까지 어떻게 아래와 같은 복잡한 데이터 구조를 Key-Value 를 통해 구현했는지 감이 잡히지 않았다.
 
 ![explorer](./images/explorer.png) 
+
+> [klaytnscope](https://klaytnscope.com/block/150170668?tabId=txList)
 
 # 코드 속으로 
 
 해당 글은 Klaytn Core의 소스코드를 통해 어떻게 실제로 데이터를 저장하고 관리하는지를 얕게 훑어본다.
 > 참고로 Klaytn은 Geth Fork로 부터 많은 시간이 흘렀기 때문에 현재는 일부 다른 구조를 가지고 있지만 해당 글에서는 다루지 않는다.
-
-![klaytn_codeline](./images/klaytn_codeline.png) 
 
 모든 소스코드를 분석할 수는 없기에 [db_manager.go](https://github.com/klaytn/klaytn/blob/dev/storage/database/db_manager.go) 를 중심으로 살펴본다.
 
@@ -51,8 +50,7 @@ await leveldb.Delete(parseByte('key'));
 
 ![db_manager_structure](./images/db_manager_structure.png) 
 
-기본적으로 알고 있으면 좋은 구조를 시각화했다. 
-- 상위 레이어로부터 Some Job(Create, Read...)이 내려오면 최종적으로 LevelDB를 통해 Disk Read/Write
+기본적으로 알고 있으면 좋은 구조를 시각화했다. 최종적으로 Key Value DB를 통해 Disk Read/Write를 한다
 
 ## Read 구조
 

@@ -6,100 +6,179 @@ category: blockchain
 draft: false
 ---
 
+
+# 시리즈
+
 먼저 문서에 오류가 있을 수 있음을 밝힙니다. 수정 요청 부탁드립니다! 
 
 두번째로, 이 문서는 여러 출처의 글을 정리한 글입니다. Geth 코드 레벨 이해를 담고 있지 않습니다.
 
-## 목차
+> 해당 글은 이더리움과 Tree 자료 구조에 대한 기본적 이해를 요구합니다.
 
 1. 이더리움 상태(State)란 무엇일까?
 2. [Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 
 3. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
 
+# 목차
 
-## 이더리움의 상태란?
+1. State
+2. Merkle Patricia Trie
+3. World State Trie
+
+# 1. State
+
+## 컴퓨터 공학에서 State?
+
+컴퓨터 공학에서 '상태(state)'는 특정 시점에서 시스템이 가지고 있는 정보의 집합을 말합니다. 이 정보는 프로그램의 변수 값, 사용자 인터페이스의 상태, 메모리의 내용 등 다양한 형태를 가질 수 있습니다.
+
+'상태 전이(transition)'는 이러한 상태가 다른 상태로 변화하는 과정을 의미하며, 사용자의 입력, 시간의 경과, 외부 이벤트 발생 등에 의해 이루어질 수 있습니다.
+
+![state](./state.png) 
+
+> [유한 상태 기계](https://ko.wikipedia.org/wiki/%EC%9C%A0%ED%95%9C_%EC%83%81%ED%83%9C_%EA%B8%B0%EA%B3%84)
+
+## 이더리움의 State?
+
+![state-transition](./state-transition.png) 
+
+이더리움의 상태는 네트워크의 현재 상태를 나타냅니다. 이는 각각의 계정 잔액, 스마트 컨트랙트 코드 및 그 실행 상태 등을 포함합니다. 트랜잭션이 처리될 때마다 이 상태는 변화하며, 이 변화는 블록체인에 영구적으로 기록됩니다.
 
 
-이더리움은 Account-based 블록체인입니다. 
+다시 말해, 이더리움에서 상태란 네트워크에 존재하는 모든 Account들의 상태입니다. 그리고 하나의 Account는 `Balance, Nonce, ContractCode, ContractData`를 포함합니다. 이러한 각각의 Account State가 모두 모여 거대한 `Global State`를 형성합니다. 
 
-이더리움에서 상태란 Account의 상태입니다. 각 Account는 Balance, Nonce 그리고 Smart Contract의 Data Store를 상태값으로 가집니다. (”배포된” 스마트 컨트랙트도 Account 입니다) 
+## Key Value DB
 
-<br/>
+각 계정의 상태 정보를 저장하는 가장 간단한 구조는 Key-Value 저장소입니다. 이 구조에서는 각 계정의 32 byte address를 고유한 키로 사용하고, 상태 객체를 값으로 저장합니다. 
 
-정리해서 Account의 상태란 Balance, Nonce, DataStore (+ Code)를 말합니다. 그리고 이러한 Account State가 모두 모여 거대한 `Global State`를 형성합니다.  이런 Global State를 저장하는 가장 이상적인 데이터 구조는 간단한 **Key-Value 저장소**입니다. `32 byte address`를 Key로, 상태 객체를 값으로 가집니다.
+![key-value](./key-value.png) 
+> `32 byte address`를 Key로, State Object를 값으로 가집니다.
 
-<br/>
+그러나 이 간단한 구현에는 문제점이 존재합니다. 2024년 4월 기준 Ethereum의 Account는 [2억 6천만개](https://etherscan.io/chart/address)입니다. 간단한 Key Value 구조는 이러한 대규모 데이터를 처리하는데 느린 탐색 속도를 보여줍니다. 특히, 네트워크의 규모가 계속해서 확장됨에 따라, 이런 문제는 더욱 심화됩니다. 느린 탐색 시간은 트랜잭션 처리 속도를 저하시키고, 이는 전체 네트워크의 성능 저하로 이어집니다. 따라서, 이더리움 네트워크는 이러한 문제를 해결하기 위해 더 효율적인 데이터 구조와 알고리즘을 사용합니다. 
 
-간단한 Key-Value Store의 문제점
-- 그러나 현재 Ethereum의 Account는 [1억 8천만개](https://etherscan.io/chart/address)입니다. Hash는 Input이 1비트만 달라져도 다시 해싱(계산)해야 합니다. 매번 1억 8천만개를 합쳐서(sum) 해싱해야한다면, 어떻게 모든 State를 BlockHash에 포함시킬 수 있을까요?
 
-<br/>
+이더리움은 복잡한 데이터 구조인 Merkle Patricia Trie (MPT)를 사용합니다. MPT는 Key-Value 쌍을 효율적으로 저장하고 검색할 수 있게 만들며 여러 문제를 해결합니다. 앞으로 MPT에 대해서 설명하겠습니다.
 
-이를 해결하기 위해 `Merkle Tree` 를 도입합니다.
+
+# 2. Merkle Patricia Trie
+
+## Tree
+
+![tree](./tree.png) 
+
+> [wikipedia](https://en.wikipedia.org/wiki/Tree_(data_structure))
+
+탐색 트리는 데이터를 효과적으로 검색하는 표준적인 방법 중 하나입니다. 이 구조는 다양한 형태로 존재하며, 그 중 이진 탐색 트리는 가장 흔한 형태 중 하나입니다.
+
+## Trie
+
+![trie](./trie.png) 
+
+> [boardinfinity](https://www.boardinfinity.com/blog/trie-data-structure/)
+
+트라이는 키가 문자열(`address`)인 경우 효율적인 검색을 제공하는 트리 기반의 데이터 구조입니다. 트라이에서는 각 노드가 키의 한 문자를 표현하며, 루트에서 노드까지의 경로가 전체 키를 나타냅니다. 
+
+
+## Patricia Trie
+
+![patricia-trie](./patricia-trie.png) 
+
+> [ethereum-stack](https://ethereum.stackexchange.com/questions/6415/eli5-how-does-a-merkle-patricia-trie-tree-work)
+
+패트리샤 트라이는 트라이의 메모리 효율을 개선한 데이터 구조로, '경로 압축(Path Compression)'을 통해 메모리 사용량을 줄입니다. 이미지와 같이 공통 접두사를 가진 키들이 한 노드에서 표현될 수 있습니다.
+
+트라이와 비교했을 때, 패트리샤 트라이는 키의 **공통 접두사**를 공유하는 데이터를 효율적으로 관리할 수 있습니다. 트라이의 단점인 메모리 사용량을 크게 줄이면서도 트라이의 장점인 효율적인 검색 속도를 유지합니다.
+
+![key-value](./key-value.png) 
+
+> 2억 6천만개의 address는 매우 많은 공통 접두사를 포함합니다 
 
 ## Merkle Tree
 
-요약하면 작은 변경사항 때문에 전체 데이터를 매번 다시 계산하는게 아니라, 각 Account State를 Leaf Node로 두고, 루트까지의 경로만을 다시 해싱하여 "일정한 실행 시간"이 보장되게 만듭니다. 또한 이러한 “State Root Hash”를 블록헤더에 포함시킵니다. (이제 Merkle Proof가 가능합니다)
 
-![merkle-tree](./merkle-tree.png) 
+이번엔 목적이 다른 데이터 구조를 소개합니다. 지금까지는 효율적인 저장과 처리를 목적으로하는 자료구조를 소개했다면, Merkle Tree를 사용하는 목적은 '데이터 위변조 방지'입니다.
 
-그러나 아직 계산에 많은 복잡함이 필요합니다. 이미 존재하는 leaf node(Account)의 수정을 통해 Root Hash변경하는것은 비교적 쉬운 일이지만, 새로운 node를 추가하거나 삭제하는 일은 트리의 정렬을 다시 계산하는 복잡한 작업입니다. (즉 지금까지 만들어진 모든 Hash를 다시 계산해야합니다) 이를 해결하기 위해 `Patricia Tree` 를 도입합니다.
+블록체인과 같은 분산 환경에서는 모든 참여자가 데이터 일관성을 유지하는 것이 매우 중요합니다. 특히 동기화 과정중에서 노드간 동일한 정보를 공유하고 있음을 빠르게 검증할 수 있는 메커니즘이 필수적입니다. 이러한 문제를 해결하기 위해 Merkle Tree가 사용됩니다.
 
-<br/>
+![merkle-tree](./merkle-tree.png)
 
-블록체인에서 Merkle Proof 예시
-- 트랜잭션이 블록에 포함되어 실행되었다는것을 어떻게 검증할 수 있을까? 
-- 내가 찾고자 하는 트랜잭션 Hash가 존재하는 경로를 Merkle Tree에서 탐색하면 가능하다. 
-- 악의적 노드가 해당 Merkle Tree Root에 존재하지 않는 Transaction을 위조하여 생성하고자 한다면, 정확히 같은 Root를 뽑아내는 Data를 찾아야할 것이다 (새로운 PoW 작업). 
-- 이를 통해 블록과 트랜잭션의 결합이 증명된다. 
-- 또한 현재 블록과 블록체인의 결합은 PoW 검증을 통해 확인 가능합니다. (이는 이전 블록의 해시가 현재 블록 헤더에 포함됨을 의미합니다)
+> [coinmonks](https://medium.com/coinmonks/merkle-trees-concepts-and-use-cases-5da873702318)
 
+Merkle Tree는 각 리프 노드가 데이터의 해시를 포함하고, 노드가 자식 노드의 해시를 합친 값의 해시를 저장하는 트리 구조입니다.
 
-## Patricia Tree
+#### 라이트 노드 사례
 
-위 문제점을 개선하기 위해, address의 공통 prefix를 바탕으로 트리를 구성할 수 있습니다.  여전히 Account Data는 leaf node에 존재하지만 내부 노드는 좀 더 복잡한 구조를 가집니다. (이는 Trade-off 관계입니다) 이렇게 하면 삽입과 삭제 작업을 진행할때 모든 노드를 이동하지 않고 leaf node에서 root node까지의 경로(Path)만을 변경합니다
+예를 들어, 라이트 노드는 특정 트랜잭션이 유효하며 블록에 포함되었는지를 검증하고자 할 때 전체 블록 데이터를 다운로드하지 않고도 이를 수행할 수 있습니다. 라이트 노드는 블록 데이터의 일부만을 다운로드하고, 루트 해시에 이르는 경로를 확인하여 데이터가 변경되지 않았음을 검증할 수 있습니다.
+
+> 악의적 노드가 해당 Merkle Tree Root에 존재하지 않는 Transaction을 위조하여 생성하고자 한다면, 정확히 같은 Root를 뽑아내는 Data를 찾아내야 한다.
 
 
-![patricia-tree](./patricia-tree.png)
+## Merkle Patricia Trie
 
-<br/>
+![merkle-patricia-trie](./merkle-patricia-trie.png)
 
-그리고 이 두가지를 합쳐 `Merkle Patricia Tree`(MPT)가 완성됩니다. (안정된 생성,수정,삭제,조회 = 검증 시간을 가집니다) 이더리움은 MPT 구조를 사용해, 원하는 작업을 빠르게 사용합니다 (Trade-off)
 
-그러나 이러한 MPT 구조일때도 역시 단계가 깊어지는 문제가 발생합니다. 이는 (getBalance, writeNonce)마다 여러번의 디스크를 읽어야한다는 것을 의미합니다. 또 이는 지속적으로 깊어집니다.  (물런 메모리에 저장하긴 하지만 생략하겠습니다) 이러한 문제를 해결하기 위해  `Modified Merkle Patricia Tree`를 사용합니다.
+Patricia Trie는 키의 공통 접두사를 기반으로 데이터를 효율적으로 저장하고 검색할 수 있는 데이터 구조입니다. Merkle Tree는 데이터 무결성 검증에 유용한 구조이지만, 키 기반의 검색과 데이터 저장 효율성 측면에서는 Patricia Trie만큼 효율적이지 않습니다.
 
-## Modified Merkle Patricia Tree
+MPT는 이 두 구조의 장점을 합친 것으로, Patricia Trie의 효율적인 키 관리 및 검색 능력과 Merkle Tree의 강력한 데이터 무결성 검증 기능을 결합합니다. 
 
-아래 사진을 보면 알 수 있듯, 각 노드를 Extension Node, Branch Node, Leaf Node로 구분합니다. 가장 큰 목적은 경로를 압축하는 것이라 생각됩니다. 이러한 지속적인 자료구조의 개선을 통해 안정된 연산시간을 가지게 됩니다. (여전히 Leaf Node는 Account입니다)
+이를 통해, 이더리움은 분산 환경에서도 빠르고 안정적으로 데이터를 관리할 수 있게 되었습니다. 
 
-![MPT](./MPT.png)
-> 좌측 상단을 보면 BlockHeader의 StateRoot가 보인다. 이는 State Trie의 Root Node의 KECCAK256 해시 값이다. 그리고 그 아래로 State Trie 구조가 보이며 Leaf Node는 Account의 State이다. (이는 추상화된 이미지이다)
+> 즉 이더리움 코어 개발팀은 분산 환경에서 직면한 주요 문제들을 해결하기 위해 MPT를 도입했습니다. 
 
-## State Trie
 
-아래는 (위 자료구조를 사용한) 이더리움의 State Trie를 추상화한 모습입니다.  
+# 3. World State Trie
 
-Leaf Node의 Account가, 블록헤더에 State Root(Hash)가 포함되어 있는것이 확인 가능합니다.
+처음에 설명했듯 이더리움의 State는 모든 계정의 잔액, 스토리지 상태, 그리고 스마트 컨트랙트 코드와 같은 정보를 포함합니다. 이더리움에서는 이 State를 `World State Trie`라는 구조를 통해 관리합니다. 
 
-그 옆에 Transactions Root Hash, Receipts Root Hash도 포함되어 있습니다.
+World State Trie는 Merkle Patricia Trie로써, 데이터의 추가, 수정, 삭제 작업이 발생할 때마다 루트 해시가 변경됩니다. 이 루트 해시는 각 블록 헤더에 저장되어, 네트워크의 모든 노드가 같은 'State'를 공유하고 있음을 보증합니다.
+
+```shell
+> eth.getBlock(1)
+{
+  ...
+
+  stateRoot: "0xe7db9b40c2d12997cfca8f52c22c3e799513d47bce745ae66ac37494c7ca69d2",
+  receiptsRoot: "0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+  transactionsRoot: x"0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421",
+}
+```
+
+> 여러 stateRoot가 World State Trie의 RootHash 값이다
+
+
+![block-world-state-trie](./block-world-state-trie.png)
+
+> 좌측 상단을 보면 `stateRoot`를 확인 가능하다. 
+
+> Leaf Node들은 각 Account의 State이다.
+
+![mpt-root-changed](./mpt-root-changed.png)
+
+> State Root가 변경되는 모습을 확인 가능하다.
+
 
 ![state-trie](./state-trie.png)
 
+위 이미지를 보면 State Trie가 변경될때마다 다시 생성하는게 아니라, 새로운 리프노드와의 연결을 통해 이어나가는 것을 알 수 있습니다.  저장공간 사용에는 효율적이지만, 만약 Disk 절약을 위해 과거 State를 정리하고자하면 매우 복잡한 작업됩니다. 아무도 '참조'하지 않는 Leaf Node를 찾아내야 하기 때문입니다. 이 작업을 `Pruning` (State 정리)이라고 합니다 (아직까지 효율적인 상태정리 알고리즘이 없습니다)
+
+> [Klaytn Geth](https://github.com/klaytn/klaytn/blob/dev/storage/database/db_manager.go#L1992C29-L1992C46) 코드에서는 `WritePruningMarks` 라는 함수를 찾을 수 있다. Pruning 가능한 노드를 표시하는 작업입니다.
+
+![ethereum-all-mpt](./ethereum-all-mpt.png)
+
+> 이더리움에서는 World State 뿐만 아니라 Account Storage, Transaction 등에도 해당 MPT 구조를 사용합니다 
+
+## Geth KeyValue DB
+
+이더리움 (실행 레이어) 클라이언트 중 하나인 Geth는 이러한 MPT 구조를 Key-Value 데이터베이스를 통해 구현합니다.
+
+> Secure Trie 키워드를 통해 더 학습 가능합니다
+
 <br/>
 
-이미지를 보면 매 블록마다 모든 State Trie를 다시 생성하는게 아니라, 이어나가는 것을 알 수 있습니다. 
+### Q. MPT구조가 아닌 다른 구조로 State를 구현하면 어떻게 되나요?
 
-저장공간 사용에는 효율적이나 만약 Disk 절약을 위해 과거 State를 정리하고자하면 매우 복잡한 작업입니다. 왜냐하면 정리 알고리즘을 통해 필요 없어진 State를 확인해야 하는데, 이건 모든 Depth를 뒤지며 찾아내야 하기 때문입니다. 이 작업을 `Pruning` (State 정리)이라고 합니다 (아직까지 효율적인 상태정리 알고리즘이 없습니다)
-
-## Geth LevelDB
-
-이러한 이미지는 추상화된 이미지이고, Geth는 LevelDB를 통해 해당 구조를 구현, 저장합니다.
-
-<br/>
-
-### Q. MPT구조가 아닌 다른 구조로 Gloabal State를 구성하면 어떻게 되나요?
-
-- (의견) 이더리움 백서에 정의되지 않은 구현체를 만들 수 는 없겠지만, 만약 이 변경때문에 RootHash가 달라지면, 하드포크하는것과 마찬가지라고 생각합니다.
+- 만약 이 변경때문에 RootHash가 달라지면 하드포크하는것과 마찬가지입니다. 
+- 다시말해 RootHash가 동일하다면 어떠한 구현체를 사용해도 문제 없습니다.
 
 <br/>
 
@@ -113,6 +192,7 @@ Leaf Node의 Account가, 블록헤더에 State Root(Hash)가 포함되어 있는
 
 ### 출처
 
+- [K. Jezek, "Ethereum Data Structures"](https://arxiv.org/pdf/2108.05513/1000.pdf) (중요)
 - [Ethereum Under the Hood: Algorithms And Data Structures](https://youtu.be/OxofT39TJgg)
 - [이더리움 스토리지 성능 최적화 이야기](https://medium.com/curg/merklized-lsm-%EC%9D%B4%EB%8D%94%EB%A6%AC%EC%9B%80-%EC%8A%A4%ED%86%A0%EB%A6%AC%EC%A7%80-%EC%84%B1%EB%8A%A5-%EC%B5%9C%EC%A0%81%ED%99%94-%EC%9D%B4%EC%95%BC%EA%B8%B0-5c77acbbe2b0)
 - [Ask about Geth: Snapshot acceleration](https://blog.ethereum.org/2020/07/17/ask-about-geth-snapshot-acceleration/) (초반)

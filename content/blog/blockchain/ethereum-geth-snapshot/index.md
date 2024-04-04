@@ -6,18 +6,18 @@ category: blockchain
 draft: false
 ---
 
+# 시리즈
+
 먼저 문서에 오류가 있을 수 있음을 밝힙니다. 수정 요청 부탁드립니다! 
 
 두번째로, 이 문서는 여러 출처의 글을 정리한 글입니다. Geth 코드 레벨 이해를 담고 있지 않습니다.
-
-## 목차
 
 1. [이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/)
 2. [Geth는 어떻게 동기화(Sync)할까?](/blockchain/geth-sync-mode) 
 3. Geth의 Snapshot과 Snap Sync
 
 
-## 스냅샷 가속 구조란? (Snapshot acceleration)
+# 스냅샷 가속 구조란? (Snapshot acceleration)
 
 스냅샷 은 이더리움 State 위에 있는 가속 데이터 구조로, Account와 Storage를 훨씬 더 빠르게 읽을 수 있게 합니다. O(log N)로 계정에 액세스하는 비용을 O(1) 으로 줄입니다.
 - 약 1억 4천만개의 계정이 있는 이더리움에서 이는 엄청난 성능 향상입니다. 하지만 결국 이러한 스냅샷 구조를 유지하기 위한 Trade-Off(새로운 오버헤드)가 있습니다.  
@@ -74,7 +74,7 @@ draft: false
 
 다만 저렴한 Read opcode 위주의 DoS 공격에 장기적으로 효과적입니다. 또한 storage call에 효과적입니다. 특히 개인 노드가 아니라, 여러 사용자를 위해 운영되는 엔터프라이즈 레벨 노드에서 10배는 엄청난 성능 향상입니다.
 
-## Fast Sync의 문제점: 대기시간
+# Fast Sync의 문제점: 대기시간
 
 Snap Sync을 알아보기전에, Fast sync의 문제점에 대해 알아보겠습니다.
 
@@ -107,7 +107,7 @@ fast sync의 “예상치 못한 병목 현상”은 이더리움 데이터 모�
 
 - 가정: 평균 이상의 네트워크, 서빙 노드가 많고, 그 서빙노드들이 내 요청만 처리할 때 (즉 성능이 좋을때)
 
-## Snap Sync
+# Snap Sync
 
 Snap Sync는 위 3가지 문제점을 모두 해결하게 디자인 되었습니다. 핵심 아이디어는 매우 간단합니다. 
 

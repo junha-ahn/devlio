@@ -6,17 +6,18 @@ category: blockchain
 draft: false
 ---
 
+# 시리즈
+
 먼저 문서에 오류가 있을 수 있음을 밝힙니다. 수정 요청 부탁드립니다! 
 
 두번째로, 이 문서는 여러 출처의 글을 정리한 글입니다. Geth 코드 레벨 이해를 담고 있지 않습니다.
 
-## 목차
 
 1. [이더리움 상태(State)란 무엇일까?](/blockchain/ethereum-state/)
 2. Geth는 어떻게 동기화할까?
 3. [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)
 
-## 노드란?
+# 노드란?
 
 [ethereum.org](https://ethereum.org/en/developers/docs/nodes-and-clients/)에서는 노드를 아래와 같이 설명합니다.
 
@@ -60,7 +61,7 @@ Archive 이외의 노드는 동기화하면서 State 데이터가 정리(Pruning
 
 Sync strategies, State Pruning라는 새로운 단어가 등장합니다. 이 단어들을 [Geth](https://github.com/ethereum/go-ethereum)의 동기화 과정을 통해 알아보겠습니다.
 
-## Geth의 Sync Strategies(동기화 전략)
+# Geth의 Sync Strategies(동기화 전략)
 
 [Geth Command Line Option](https://geth.ethereum.org/docs/interface/command-line-options) 
 ```

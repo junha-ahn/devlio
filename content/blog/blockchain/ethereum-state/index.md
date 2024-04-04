@@ -29,21 +29,27 @@ draft: false
 
 ## 컴퓨터 공학에서 State?
 
-컴퓨터 공학에서 '상태(state)'는 특정 시점에서 시스템이 가지고 있는 정보의 집합을 말합니다. 이 정보는 프로그램의 변수 값, 사용자 인터페이스의 상태, 메모리의 내용 등 다양한 형태를 가질 수 있습니다.
-
-'상태 전이(transition)'는 이러한 상태가 다른 상태로 변화하는 과정을 의미하며, 사용자의 입력, 시간의 경과, 외부 이벤트 발생 등에 의해 이루어질 수 있습니다.
 
 ![state](./state.png) 
 
 > [유한 상태 기계](https://ko.wikipedia.org/wiki/%EC%9C%A0%ED%95%9C_%EC%83%81%ED%83%9C_%EA%B8%B0%EA%B3%84)
 
+
+'상태(state)'는 특정 시점에서 시스템이 가지고 있는 정보의 집합을 말합니다. 이 정보는 프로그램의 변수 값, 사용자 인터페이스의 상태, 메모리의 내용 등 다양한 형태를 가질 수 있습니다.
+
+'상태 전이(transition)'는 이러한 상태가 다른 상태로 변화하는 과정을 의미하며, 사용자의 입력, 시간의 경과, 외부 이벤트 발생 등에 의해 이루어질 수 있습니다.
+
 ## 이더리움의 State?
 
 ![state-transition](./state-transition.png) 
 
+> 트랜잭션에 의한 상태 전이를 확인 가능합니다.
+
 이더리움의 상태(State)는 네트워크에 존재하는 모든 Account의 State의 집합입니다.
 
-하나의 Account State는 `Balance, Nonce, ContractCode, ContractDataStorage`를 포함합니다. 트랜잭션이 처리될 때마다 각각의 상태가 전이되며, 블록체인에 영구적으로 기록됩니다.
+하나의 Account State는 `Balance, Nonce, ContractCode, ContractDataStorage`를 포함합니다. 
+
+트랜잭션이 처리될 때마다 각각의 상태가 전이되며, 블록체인에 영구적으로 기록됩니다.
 
 다시 말해, 이더리움에서 상태란 네트워크에 존재하는 모든 Account 상태 집합입니다.
 

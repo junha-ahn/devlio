@@ -10,13 +10,12 @@ draft: false
 
 > 이 글은 Klaytn에 대해 사전 지식이 있는 개발자를 대상으로 작성하였습니다.
 
-Kaia v1.0.0 테스트넷 ‘Kairos’가 출시되었다. 이 글에서는 Klaytn과 Kaia의 기술적 및 인터페이스 차이점을 살펴본다.
+Kaia v1.0.0 테스트넷 ‘Kairos’가 출시되었다. 이 글에서는 Kaia에 새롭게 추가된 기능을 살펴본다.
 
-아래 언급된 것처럼, 기존 Klaytn 네트워크에서 특정 블록넘버를 기준으로 '하드포크'하는 형태로 Kaia 네트워크로 전환된다. 
 
 > "기술적인 관점에서는 Klaytn 네트워크를 기반으로 Kaia 체인이 작동하는 형태." - [토큰 스왑 안내](https://klaytn.foundation/kr/%ec%8b%a0%ea%b7%9c-kaia-%ec%b2%b4%ec%9d%b8-%eb%9f%b0%ec%b9%ad%ec%97%90-%eb%94%b0%eb%a5%b8-%ed%86%a0%ed%81%b0-%ec%8a%a4%ec%99%91-%ec%95%88%eb%82%b4/)
 
-즉, Klaytn chaindata는 유지된다. 이러한 내용은 아래 스크린샷을 통해 확인 가능하다.
+위 언급된 것처럼, 기존 Klaytn 네트워크에서 특정 블록넘버를 기준으로 '하드포크'하는 형태로 Kaia 네트워크로 전환된다. 즉, Klaytn chaindata는 유지된다. 
 
 ![IsKaiaForkEnabled](./images/IsKaiaForkEnabled.png) 
 
@@ -25,6 +24,8 @@ Kaia v1.0.0 테스트넷 ‘Kairos’가 출시되었다. 이 글에서는 Klayt
 
 ![comment](./images/comment.png) 
 > [PR: Klaytn -> Kaia in comments](https://github.com/klaytn/klaytn/pull/2152)
+
+위 스크린샷들을 통해 새로운 Kaia 네트워크는 기존 Klaytn 소스코드를 기반으로 만들어진 것을 알 수 있다.
 
 이제부터 Kaia에 새롭게 추가된 3개의 기능에 대해 알아본다.
 
@@ -39,7 +40,7 @@ Kaia v1.0.0 테스트넷 ‘Kairos’가 출시되었다. 이 글에서는 Klayt
 
 # `getTotalSupply(blockNumber)`
 
-해당 기능은 [Add klay_getTotalSupply API](https://github.com/klaytn/klaytn/pull/2148) PR을 통해 구현되었다. 
+> [Add klay_getTotalSupply API](https://github.com/klaytn/klaytn/pull/2148) PR을 통해 구현되었다. 
 
 > 참고로 Geth에도 [Supply delta live tracer](https://github.com/ethereum/go-ethereum/pull/29347) 비슷한 기능이 추가되었다. 
 
@@ -50,9 +51,7 @@ $ curl https://klay-api.klaytnapi.com/v1/total-supply
 5964547725.012343
 ```
 
-현재 네트워크의 KAIA 물량에 관한 정보를 얻을 수 있는 Node가 제공하는 JSON-RPC API. 
-
-특정 블록 시점의 총 공급량을 조회할 수 있다.
+이제는 JSON-RPC를 통해 특정 블록 시점의 KAIA 공급량을 조회할 수 있다.
 
 ```shell
 > klay.getTotalSupply('latest')
@@ -109,12 +108,11 @@ for {
 > 계산 로직도 확인 가능하다.
 
 
-
 # Public Delegation
 
-GC가 아닌 사용자가 클레이튼의 컨센서스에 참여하기 위해서는 [SKlay](https://medium.com/orbit-chain/sklay-%ED%81%B4%EB%A0%88%EC%9D%B4%ED%8A%BC-%EA%B8%B0%EB%B0%98-defi%EC%9D%98-%ED%83%84%EC%83%9D-6d7aeeb9801c)  등의 서드파티 기능을 사용해야 했다. 
+기존 클레이튼에서는 GC가 아닌 일반 사용자가 클레이튼의 컨센서스에 참여하기 위해서는 [SKlay](https://medium.com/orbit-chain/sklay-%ED%81%B4%EB%A0%88%EC%9D%B4%ED%8A%BC-%EA%B8%B0%EB%B0%98-defi%EC%9D%98-%ED%83%84%EC%83%9D-6d7aeeb9801c)  등의 서드파티 기능을 사용해야 했다. 
 
-하지만 카이아에서는 PublicDeligation을 지원한다. [Kaia 진행 상황 및 기능 업데이트](https://klaytn.foundation/kr/kaia-%ec%a7%84%ed%96%89-%ec%83%81%ed%99%a9-%eb%b0%8f-%ea%b8%b0%eb%8a%a5-%ec%97%85%eb%8d%b0%ec%9d%b4%ed%8a%b8/) 글을 보면 확인 가능하다.
+카이아에서는 PublicDeligation을 지원한다. [Kaia 진행 상황 및 기능 업데이트](https://klaytn.foundation/kr/kaia-%ec%a7%84%ed%96%89-%ec%83%81%ed%99%a9-%eb%b0%8f-%ea%b8%b0%eb%8a%a5-%ec%97%85%eb%8d%b0%ec%9d%b4%ed%8a%b8/) 글을 통해서도 확인 가능하다.
 
 
 ## 1. PublicDeligation 직접 해보기
@@ -124,9 +122,7 @@ GC가 아닌 사용자가 클레이튼의 컨센서스에 참여하기 위해서
 
 ![klaytnscope](./images/klaytnscope.png) 
 
-[LineNext Public Delegated KAIA](https://baobab.klaytnscope.com/account/0x5bb2b2977A29AD85994f601f45802F514BB5E2A1?tabId=contractCode)를 접속하면 현재 테스트넷의 PublicDeligation Contract와 상호작용이 가능하다. 
-
-위 UI를 통해 PublicDeligation의 한 사이클을 진행해보자
+[LineNext Public Delegated KAIA](https://baobab.klaytnscope.com/account/0x5bb2b2977A29AD85994f601f45802F514BB5E2A1?tabId=contractCode)를 접속하면 현재 테스트넷의 PublicDeligation Contract와 상호작용이 가능하다. 위 UI를 통해 PublicDeligation의 한 사이클을 진행해보자
 
 
 ### Staking
@@ -159,11 +155,14 @@ GC가 아닌 사용자가 클레이튼의 컨센서스에 참여하기 위해서
 ![withdraw-explorer](./images/withdraw-explorer.png) 
 > [klaytnscope](https://baobab.klaytnscope.com/tx/0x02022781030d817f724b82968d70d8fdd3e90a90356c655544955773e9c0cc67)
 
-withdraw 함수를 통해 '출금 신청'이 가능하며, 7일 후 실제 출금 가능하다.
+출금신청과 동시에 즉시 pdKAIA는 소각되고, 리워드 수량은 확정된다.
 
-출금신청(withdraw)과 동시에 즉시 pdKAIA는 소각되고, 리워드 수량은 확정된다.
+주의해야할 부분은, `withdraw()` 함수는 실제 'KAIA 출금'이 아니다는 점이다. 
+- `withdraw()` 함수를 통해 출금 신청 (이때 pdKaia는 즉시 소각된다)
+- 7일이 지난 후에 `claim()`을 통해 실제 자산 인출(D+7)
+- 그러나 추가적으로 7일이 지나면 (D+14) 해당 요청이 만료
 
-> '출금', '출금신청'에 대해서는 아래 로직설명에서 자세히 살펴본다.
+> '출금신청'에 대해서는 아래 CnStakingV3 부분 에서 한번 더 언급한다.
 
 
 ## 2. Contract 간단히 살펴보기 
@@ -214,7 +213,7 @@ withdraw 함수를 통해 '출금 신청'이 가능하며, 7일 후 실제 출�
 > - PublicDelegation 비활성화: 이 모드에서는 CnSV2와 동일하게 작동합니다.
 > - PublicDelegation 활성화: 일반 사용자가 KAIA를 CnSV3에 위임할 수 있습니다.
 
-지금까지 소개한 내용들을 통해 실제 KAIA가 있는 컨트랙트는 CnStakingV3 컨트랙트라는것을 이해 가능하며, "출금 신청 후 7일 ~ 14일 제한" 로직은 CnStakingV3에 구현된 로직이라는 것 또한 이해 가능하다. (PublicDelegation Contract에는 관련된 로직이 없다)
+지금까지 소개한 내용들을 통해 실제 KAIA가 있는 컨트랙트는 CnStakingV3 컨트랙트라는것을 이해 가능하며, "출금 신청 후 7일 ~ 14일 제한" 로직은 CnStakingV3에 구현된 로직이라는 것 또한 이해 가능하다. (PublicDelegation Contract에는 관련된 로직이 없다) 
 
 # 마치며
 

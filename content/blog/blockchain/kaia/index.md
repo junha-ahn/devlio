@@ -38,7 +38,7 @@ Kaia v1.0.0 테스트넷 ‘Kairos’가 출시되었다. 이 글에서는 Kaia�
 
 이제 카이아에서는 `EIP-1559`와 동일한 Type:2 트랜잭션을 만들 수 있으며 Tip순으로 펜딩 트랜잭션이 정렬된다.
 
-# `getTotalSupply(blockNumber)`
+# getTotalSupply(blockNumber)
 
 > [Add klay_getTotalSupply API](https://github.com/klaytn/klaytn/pull/2148) PR을 통해 구현되었다. 
 
@@ -146,7 +146,7 @@ for {
 ```
 > Scope UI를 통해 호출 가능하다.
 
-`maxWithdraw` 함수를 호출하면 받을 수 있는 보상 KAIA의 수량을 확인 가능하다. 함수를 호출할 때마다 결과가 증가하고 있다. 이는 고정된 KAIA 토큰에 대해 리워드의 교환비율이 증가하는 구조임을 의미한다.
+`maxWithdraw` 함수를 호출하면 받을 수 있는 보상 KAIA의 수량을 확인 가능하다. 함수를 호출할 때마다 결과가 증가하고 있다. 이는 고정된 pdKAIA 토큰에 대해 KAIA의 교환비율이 증가하는 구조임을 의미한다.
 
 ### Withdraw
 
@@ -155,7 +155,7 @@ for {
 ![withdraw-explorer](./images/withdraw-explorer.png) 
 > [klaytnscope](https://baobab.klaytnscope.com/tx/0x02022781030d817f724b82968d70d8fdd3e90a90356c655544955773e9c0cc67)
 
-출금신청과 동시에 즉시 pdKAIA는 소각되고, 리워드 수량은 확정된다.
+출금신청과 동시에 즉시 pdKAIA는 소각되고, 출금될 KAIA 수량은 확정된다.
 
 주의해야할 부분은, `withdraw()` 함수는 실제 'KAIA 출금'이 아니다는 점이다. 
 - `withdraw()` 함수를 통해 출금 신청 (이때 pdKaia는 즉시 소각된다)
@@ -213,7 +213,11 @@ for {
 > - PublicDelegation 비활성화: 이 모드에서는 CnSV2와 동일하게 작동합니다.
 > - PublicDelegation 활성화: 일반 사용자가 KAIA를 CnSV3에 위임할 수 있습니다.
 
-지금까지 소개한 내용들을 통해 실제 KAIA가 있는 컨트랙트는 CnStakingV3 컨트랙트라는것을 이해 가능하며, "출금 신청 후 7일 ~ 14일 제한" 로직은 CnStakingV3에 구현된 로직이라는 것 또한 이해 가능하다. (PublicDelegation Contract에는 관련된 로직이 없다) 
+<br/>
+
+![contract](./images/contract.png) 
+
+지금까지 소개한 내용들을 통해 스테이킹한 실제 KAIA를 가지고 있는 컨트랙트는 CnStakingV3 컨트랙트라는것을 이해 가능하며, "출금 신청 후 7일 ~ 14일 제한" 로직은 CnStakingV3에 구현된 로직임을 이해 가능하다. (PublicDelegation Contract에는 관련된 로직이 없다) 
 
 # 마치며
 

@@ -38,6 +38,9 @@ Kaia v1.0.0 테스트넷 ‘Kairos’가 출시되었다. 이 글에서는 Kaia�
 
 이제 카이아에서는 `EIP-1559`와 동일한 Type:2 트랜잭션을 만들 수 있으며 Tip순으로 펜딩 트랜잭션이 정렬된다.
 
+> 기존 legacy tx나 klaytn type tx는 gasPrice 필드가 그대로 effectiveGasPrice로 적용된다. 
+> 따라서 tip = gasPrice - baseFee가 된다.
+
 # getTotalSupply(blockNumber)
 
 > [Add klay_getTotalSupply API](https://github.com/klaytn/klaytn/pull/2148) PR을 통해 구현되었다. 
@@ -198,7 +201,7 @@ for {
 ### PublicDelegation.claim()
 
 ![claim](./images/claim.png)
-> 기간 초과 등으로 출금 실패할 경우 다시 pdKAIA를 발행한다.
+> 기간 초과 때문에 실패할 경우 pdKAIA가 발행되며, 다시 출금신청 후 7일을 기다려야 한다.
 
 ### CnStakingV3
 

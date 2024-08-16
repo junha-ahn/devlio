@@ -16,6 +16,7 @@ draft: false
 <br/>
 
 필자는 그 중 "애플리케이션을 위해서" 노드를 운영한 경험이 있습니다. (모든 과정에 참여한 것도 아닙니다.)
+> 물런 애플리케이션도 제가 개발합니다. 
 
 뭐 많이 해 본 것도 아니고, 다 아는 것도 아닌데 글을 쓰는 이유는... 그냥 쓰고 싶어서입니다.
 
@@ -38,6 +39,16 @@ draft: false
 3. 실행 하고 문제 없기를 기도🙏하기 
 
 > 농담 같지만 그렇네요...
+
+<br/>
+
+조금 더 자세하게, 제가 한 업무를 설명해보면
+
+1. 공식문서 정독 (=요구성능과, 버튼 이해하기)
+2. 필요한 스펙(CPU, Disk, P2P 방화벽 Outbound 등)을 정의
+3. 인프라팀에게 EC2 생성 요청 
+4. 폐쇄망 환경 Ubuntu 머신에 노드를 설치하고, 실행
+5. 새 버전이 생기면 업데이트하고, 다시 실행하고...
 
 <br/>
 
@@ -81,11 +92,59 @@ draft: false
 - 동기화 Peer Drop/NotFound
 - 트랜잭션 전파 안됨
 
+### XRP 사례
+
+조금 더 디테일하게 XRP 노드를 운영하며 겪었던, 실제 사례를 소개해보겠습니다. 
+
+![cpu](./cpu.png) 
+
+
+당시 XRP 노드에서는 위 사진과 같이 주기적으로 Disk I/O와 CPU Usage가 크게 증가하고 다시 줄어드는 문제가 발생했습니다. 
+
+![slack](./slack.png) 
+> 당시 슬랙방에 남긴 메세지
+
+Github Issue와 Docs를 정독하여 해당 문제에 대한 원인이 [Online Deletion](https://xrpl.org/docs/infrastructure/configuration/data-retention/online-deletion)(DB Prunning)에 있다고 추측했습니다.
+
+![gitissue](./gitissue.png) 
+
+그리고 오픈소스 개발자와의 대화를 통해 현재 상황에 알맞는 설정값을 찾아내고, 해당 문제를 최종 해결하였습니다.
+
+### ETH Geth 사례
+
+![unknown_fast](./unknown_fast.png) 
+![unknown_fast_slack](./unknown_fast_slack.png) 
+> 당시 팀원분의 슬랙 메시지
+
+어느날 [Geth v1.10.15](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.15) Upgrade 후 노드를 실행하니 위와 같은 오류가 발생했습니다.
+
+![unknown_fast_reason](./unknown_fast_reason.png) 
+
+원인은 Github Issue에서 키워드 검색을 통해 쉽게 찾을 수 있었습니다. 
+
+보통 버전 변경은 릴리즈노트를 확인 후 진행하는데 당시 릴리즈 노트에는 Fast Sync Config를 없애는 점을 명시하지 않았습니다. 
+
+이미 [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)에 대해 학습을 마쳤기 때문에, 해당 설정에 대해 팀원분들께 설명 드렸습니다.
+
+> 물런 이미 동기화(Sync)를 마친 상태의 노드였기 때문에, 동기화전략을 Fast => Snap/Full으로 바꿔도 어떠한 차이도 없었습니다.
+
+큰 문제를 해결한 이야기는 아니지만, 공식문서나 자료를 항상 잘 정독하면 무엇이 좋은지 보여주는 사례입니다.
+
+### KLAY 사례
+
+![klaytn](./klaytn.png) 
+
+> 당시 상황은 [클레이튼이 죽었어요](/blockchain/klaytn-network-issue)에서 확인 가능하다.
+
+물런 정확히 '노드 운영'에 대한 이야기는 아니지만, 결국 위와 같은 방법도 문제 해결의 일부분이다.
+
 
 ## 팁이 있다면?
 
+담지 못한 많은 사례들이 있지만, 문제에 잘 대응하기 위한 방법은 간단하다.
+> 언제나 정공법...
 
-언제나 문서를 잘 읽어야 합니다. 
+언제나 공식문서(Github, Running Guide 등)를 잘 읽어야 합니다. 
 - [Set up your own ethereum node](https://ethereum.org/en/developers/docs/nodes-and-clients/run-a-node/)
 
 <br/>
@@ -103,7 +162,7 @@ AWS와 같은 클라우드를 사용하면 좋겠죠? 그리고 스냅샷과, �
 
 <br/>
 
-사실 목적에 맞다면 퀵노드, KAS와 같은 서비스를 사용하시는것도 좋습니다.
+사실 목적에 맞고 Latency 이슈가 없다면 퀵노드, KAS와 같은 서비스를 사용하시는것도 좋습니다.
 
 <br/>
 

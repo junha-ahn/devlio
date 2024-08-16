@@ -92,9 +92,11 @@ draft: false
 - 동기화 Peer Drop/NotFound
 - 트랜잭션 전파 안됨
 
-### XRP 사례
+## 사례를 소개합니다
 
-조금 더 디테일하게 XRP 노드를 운영하며 겪었던, 실제 사례를 소개해보겠습니다. 
+### XRP
+
+조금 더 디테일하게 XRP 노드를 운영하며 겪었던, 실제 케이스를 소개해보겠습니다. 
 
 ![cpu](./cpu.png) 
 
@@ -104,39 +106,38 @@ draft: false
 ![slack](./slack.png) 
 > 당시 슬랙방에 남긴 메세지
 
-Github Issue와 Docs를 정독하여 해당 문제에 대한 원인이 [Online Deletion](https://xrpl.org/docs/infrastructure/configuration/data-retention/online-deletion)(DB Prunning)에 있다고 추측했습니다.
+Github Issue와 Docs를 정독하여 해당 문제에 대한 원인이 [Online Deletion](https://xrpl.org/docs/infrastructure/configuration/data-retention/online-deletion)(DB Prunning)에 있다고 추측고
 
 ![gitissue](./gitissue.png) 
 
-그리고 오픈소스 개발자와의 대화를 통해 현재 상황에 알맞는 설정값을 찾아내고, 해당 문제를 최종 해결하였습니다.
+오픈소스 개발자와의 대화를 통해 현재 상황에 알맞는 설정값을 찾아내고, 해당 문제를 최종 해결하였습니다.
 
-### ETH Geth 사례
+### ETH Geth
 
 ![unknown_fast](./unknown_fast.png) 
+> [Geth v1.10.15](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.15) Upgrade 후 노드를 실행하니 위와 같은 오류가 발생했습니다.
+
 ![unknown_fast_slack](./unknown_fast_slack.png) 
 > 당시 팀원분의 슬랙 메시지
 
-어느날 [Geth v1.10.15](https://github.com/ethereum/go-ethereum/releases/tag/v1.10.15) Upgrade 후 노드를 실행하니 위와 같은 오류가 발생했습니다.
 
 ![unknown_fast_reason](./unknown_fast_reason.png) 
 
-원인은 Github Issue에서 키워드 검색을 통해 쉽게 찾을 수 있었습니다. 
+원인은 Github Issue에서 키워드 검색을 통해 쉽게 찾을 수 있었습니다.  릴리즈노트를 확인 후 업데이트를 진행하는데 당시 릴리즈 노트에는 Fast Sync Config를 없애는 점을 명시하지 않았습니다. 그래서 위 오류에 당황하게 되었습니다.
 
-보통 버전 변경은 릴리즈노트를 확인 후 진행하는데 당시 릴리즈 노트에는 Fast Sync Config를 없애는 점을 명시하지 않았습니다. 
+저는 당시 [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)에 대해 학습을 마쳤기 때문에, 해당 설정에 대해 팀원분들께 설명 드렸습니다.
 
-이미 [Geth의 Snapshot과 Snap Sync](/blockchain/ethereum-geth-snapshot)에 대해 학습을 마쳤기 때문에, 해당 설정에 대해 팀원분들께 설명 드렸습니다.
-
-> 물런 이미 동기화(Sync)를 마친 상태의 노드였기 때문에, 동기화전략을 Fast => Snap/Full으로 바꿔도 어떠한 차이도 없었습니다.
+> 물런 이미 동기화(Sync)를 마친 상태의 노드였기 때문에, 동기화전략을 Fast => Snap/Full으로 바꿔도 어떠한 차이도 없습니다.
 
 큰 문제를 해결한 이야기는 아니지만, 공식문서나 자료를 항상 잘 정독하면 무엇이 좋은지 보여주는 사례입니다.
 
-### KLAY 사례
+### KLAY 
 
 ![klaytn](./klaytn.png) 
 
 > 당시 상황은 [클레이튼이 죽었어요](/blockchain/klaytn-network-issue)에서 확인 가능하다.
 
-물런 정확히 '노드 운영'에 대한 이야기는 아니지만, 결국 위와 같은 방법도 문제 해결의 일부분이다.
+물런 정확히 '노드 운영'에 대한 이야기는 아니지만, 위와 같은 문제도 존재하는것을 소개하고 싶었습니다.
 
 
 ## 팁이 있다면?

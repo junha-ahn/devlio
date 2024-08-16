@@ -108,6 +108,7 @@ draft: false
 [Git Issue](https://github.com/XRPLF/rippled/issues/3767), Docs 등을 정독하여 원인이 [Online Deletion](https://xrpl.org/docs/infrastructure/configuration/data-retention/online-deletion)(DB Prunning)에 있다고 추측했고
 
 ![gitissue](./gitissue.png) 
+> [Ask About Online Delete (Version: 1.7.3)](https://github.com/XRPLF/rippled/issues/3990)
 
 오픈소스 개발자와의 대화를 통해 현재 상황에 알맞는 설정값을 찾아내고, 해당 문제를 최종 해결하였습니다.
 
